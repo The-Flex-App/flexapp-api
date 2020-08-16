@@ -1,0 +1,27 @@
+extend type Query {
+  projectById(id: ID!): Project
+
+  projects(first: Int, offset: Int): [Project!]!
+}
+
+extend type Mutation {
+  createProject(editProjectReq: EditProjectReq!): Project!
+
+  editProject(id: ID!, editProjectReq: EditProjectReq!): Project
+
+  deleteProject(id: ID!): Project
+}
+
+type Project {
+  id: ID!
+  creator: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String
+}
+
+input EditProjectReq {
+  title: String!
+  description: String
+}
