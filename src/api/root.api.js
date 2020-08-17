@@ -9,13 +9,13 @@ export const resolvers = {
   DateTime: GraphQLDateTime,
 
   Query: {
-    sayHello: (obj, args, context, info) => {
+    sayHello: (parent, args, ctx, info) => {
       return `Hello ${args.name}!`;
     },
   },
 
   Mutation: {
-    sayHello: (obj, args, context, info) => {
+    sayHello: (parent, args, ctx, info) => {
       return `Hello ${args.name}!`;
     },
   },

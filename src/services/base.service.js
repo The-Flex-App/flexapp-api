@@ -11,10 +11,7 @@ export default class BaseService {
     return this.model.query().whereIn('id', ids);
   }
 
-  async findAll(first, offset) {
-    first = first || 100;
-    offset = offset || 1;
-
-    return this.model.query().offset(offset).limit(first);
+  async findAll(first = 100, offset = 1) {
+    return this.model.query();
   }
 }

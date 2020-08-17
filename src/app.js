@@ -4,7 +4,6 @@ import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 import { initDatabase } from './utils/database';
 import { apiExplorer } from './api';
-import { verify } from './utils/jwt';
 import { logger } from './utils/logging';
 import depthLimit from 'graphql-depth-limit';
 
@@ -15,47 +14,37 @@ const port = process.env.PORT || 8080;
 initDatabase();
 
 // Init api and run server
-apiExplorer.getSchema()
-    .then((schema) => {
-        // Configure express
-        const app = express();
-        app.use(express.json());
-        app.use(express.urlencoded({ extended: false }));
-        app.use(cookieParser());
-        app.use(cors());
+apiExplorer
+  .getSchema()
+  .then((schema) => {
+    // Configure express
+    const app = express();
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
+    app.use(cookieParser());
+    app.use(cors());
 
-        // Configure apollo
-        const apolloServer = new ApolloServer({
-            schema,
+    // Configure apollo
+    const apolloServer = new ApolloServer({
+      schema,
 
-            context: ({ req, res }) => {
-                const context = {};
+      formatError: (error) => {
+        logger.error(error);
+        return error;
+      },
 
-                // Verify jwt token
-                context.authUser = verify(req, res);
+      validationRules: [depthLimit(5)],
 
-                return context;
-            },
-
-            formatError: (error) => {
-                logger.error(error);
-                return error;
-            },
-
-            validationRules: [
-                depthLimit(5)
-            ],
-
-            debug: true
-        });
-
-        apolloServer.applyMiddleware({ app });
-
-        // Run server
-        app.listen({ port }, () => {
-            logger.info(`🚀Server ready at http://localhost:${ port }${ apolloServer.graphqlPath }`);
-        });
-    })
-    .catch(err => {
-        logger.error('Failed to load api', err);
+      debug: true,
     });
+
+    apolloServer.applyMiddleware({ app });
+
+    // Run server
+    app.listen({ port }, () => {
+      logger.info(`🚀Server ready at http://localhost:${port}${apolloServer.graphqlPath}`);
+    });
+  })
+  .catch((err) => {
+    logger.error('Failed to load api', err);
+  });

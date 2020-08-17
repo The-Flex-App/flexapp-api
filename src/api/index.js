@@ -1,9 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { ForbiddenError } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import { applyMiddleware } from 'graphql-middleware';
-import { shield } from 'graphql-shield';
 
 class ApiExplorer {
   constructor() {
@@ -45,9 +43,6 @@ class ApiExplorer {
       if (obj.resolvers) {
         this._resolvers.push(obj.resolvers);
       }
-      if (obj.permissions) {
-        this._merge(this._permissions, obj.permissions);
-      }
       if (obj.validators) {
         this._merge(this._validators, obj.validators);
       }
@@ -67,14 +62,7 @@ class ApiExplorer {
     // Create graphql schema with middleware
     const schema = makeExecutableSchema({ typeDefs: this._typeDefs, resolvers: this._resolvers });
 
-    return applyMiddleware(
-      schema,
-      this._validators,
-      shield(this._permissions, {
-        allowExternalErrors: true,
-        fallbackError: new ForbiddenError('Not Authorised!'),
-      })
-    );
+    return applyMiddleware(schema, this._validators);
   }
 }
 

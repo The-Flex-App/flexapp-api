@@ -5,23 +5,20 @@ extend type Query {
 }
 
 extend type Mutation {
-  createProject(editProjectReq: EditProjectReq!): Project!
-
-  editProject(id: ID!, editProjectReq: EditProjectReq!): Project
-
+  createProject(input: ProjectInput!): Project!
+  editProject(id: ID!, input: ProjectInput!): Project
   deleteProject(id: ID!): Project
 }
 
 type Project {
   id: ID!
-  creator: User!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   description: String
 }
 
-input EditProjectReq {
+input ProjectInput {
   title: String!
   description: String
 }

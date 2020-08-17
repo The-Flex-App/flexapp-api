@@ -6,42 +6,26 @@ export const typeDefs = readFileSync(`${__dirname}/project.api.graphql`, 'utf8')
 
 export const resolvers = {
   Query: {
-    projectById: (obj, { id }, context, info) => {
+    projectById: (parent, { id }, ctx, info) => {
       return projectService.findById(id);
     },
 
-    projects: (obj, { first, offset }, context, info) => {
+    projects: (parent, { first, offset }, ctx, info) => {
       return projectService.findAll(first, offset);
     },
   },
 
   Mutation: {
-    createProject: (obj, { editProjectReq }, { authUser }, info) => {
-      if (await projectService.findByTitle(editProjectReq.title)) {
-        return {
-          success: false,
-          message: 'Project address exists!',
-          user: undefined,
-        };
-      }
-
-      return projectService.createProject(authUser.id, editProjectReq);
+    createProject: (parent, { input }, ctx, info) => {
+      return projectService.createProject(input);
     },
 
-    editProject: (obj, { id, editProjectReq }, context, info) => {
-      return projectService.editProject(id, editProjectReq);
+    editProject: (parent, { id, input }, ctx, info) => {
+      return projectService.editProject(id, input);
     },
 
-    deleteProject: (obj, { id }, context, info) => {
+    deleteProject: (parent, { id }, ctx, info) => {
       return projectService.deleteProject(id);
-    },
-  },
-
-  Project: {
-    creator: ({ creatorId }, args, context, info) => {
-      const userDataLoader = UserDataLoader.getInstance(context);
-
-      return userDataLoader.load(creatorId);
     },
   },
 };
