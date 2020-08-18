@@ -48,6 +48,10 @@ class ProjectService extends BaseService {
 
     return project;
   }
+
+  async findByTitle(title) {
+    return Project.query().findOne('title', title);
+  }
 }
 
 export const projectService = new ProjectService();

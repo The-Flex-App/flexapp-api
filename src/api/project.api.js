@@ -16,7 +16,12 @@ export const resolvers = {
   },
 
   Mutation: {
-    createProject: (parent, { input }, ctx, info) => {
+    createProject: async (parent, { input }, ctx, info) => {
+      console.log(input);
+      if (await projectService.findByTitle(input.title)) {
+        throw new Error('Project already exists');
+      }
+
       return projectService.createProject(input);
     },
 

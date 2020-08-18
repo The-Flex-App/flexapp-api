@@ -1,0 +1,30 @@
+extend type Query {
+  videoById(id: ID!): Video
+
+  videosByProject(projectId: Int): [Video]!
+
+  videos(first: Int, offset: Int): [Video!]!
+}
+
+extend type Mutation {
+  createVideo(input: VideoInput!): Video!
+  editVideo(id: ID!, input: VideoInput!): Video
+  deleteVideo(id: ID!): Video
+}
+
+type Video {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  projectId: Int
+  title: String!
+  url: String!
+  description: String
+}
+
+input VideoInput {
+  title: String!
+  description: String
+  url: String!
+  projectId: Int
+}

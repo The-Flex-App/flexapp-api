@@ -7,14 +7,13 @@ class VideoService extends BaseService {
     super(Video);
   }
 
-  async createVideo(creatorId, editVideoReq) {
-    editVideoReq.creatorId = creatorId;
-
+  async createVideo(input) {
     let trx;
+    input.creatorId = 1;
     try {
       trx = await transaction.start(Video.knex());
 
-      const video = await Video.query(trx).insert(editVideoReq);
+      const video = await Video.query(trx).insert(input);
 
       await trx.commit();
 
@@ -25,12 +24,12 @@ class VideoService extends BaseService {
     }
   }
 
-  async editVideo(id, editVideoReq) {
+  async editVideo(id, input) {
     let trx;
     try {
       trx = await transaction.start(Video.knex());
 
-      await Video.query(trx).findById(id).patch(editVideoReq);
+      await Video.query(trx).findById(id).patch(input);
       const video = await Video.query(trx).findById(id);
 
       await trx.commit();
@@ -48,6 +47,10 @@ class VideoService extends BaseService {
     await Video.query().deleteById(id);
 
     return video;
+  }
+
+  async findByProject(projectId) {
+    return Video.query().where('projectId', projectId);
   }
 }
 
