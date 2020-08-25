@@ -17,7 +17,7 @@ const configurations = {
   development: { ssl: true, port: 8080, hostname: 'localhost' },
 };
 
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.NODE_ENV || 'production';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Do not reject self signed certificates
 const port = process.env.PORT || 8080;
