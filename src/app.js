@@ -6,8 +6,7 @@ import { initDatabase } from './utils/database';
 import { apiExplorer } from './api';
 import { logger } from './utils/logging';
 import depthLimit from 'graphql-depth-limit';
-
-const AWS = require('AWS-SDK');
+import AWS from 'aws-sdk';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Do not reject self signed certificates
 const port = process.env.PORT || 8080;
