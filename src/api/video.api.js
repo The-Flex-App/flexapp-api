@@ -20,7 +20,12 @@ export const resolvers = {
 
   Mutation: {
     createVideo: (parent, { input }, ctx, info) => {
-      return videoService.createVideo(input);
+      const objVideo = input;
+
+      objVideo.thumbnail = input.thumbnail.name;
+      objVideo.video = input.video.name;
+
+      return videoService.createVideo(objVideo);
     },
 
     editVideo: (parent, { id, input }, ctx, info) => {

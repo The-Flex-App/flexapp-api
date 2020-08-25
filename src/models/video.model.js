@@ -14,11 +14,13 @@ export default class Video extends BaseModel {
       updatedAt: { type: 'string', format: 'date-time' },
       title: { type: 'string', minLength: 1, maxLength: 255 },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
-      url: { type: 'string', minLength: 1, maxLength: 4000 },
+      video: { type: 'string', minLength: 1, maxLength: 4000 },
+      thumbnail: { type: 'string', minLength: 1, maxLength: 1000 },
+      duration: { type: 'integer' },
       projectId: { type: 'integer' },
     },
 
-    required: ['creatorId', 'projectId', 'url'],
+    required: ['creatorId', 'projectId', 'video'],
   };
 
   static relationMappings = {

@@ -7,8 +7,10 @@ exports.up = (knex, Promise) => {
     t.integer('project_id').unsigned().notNullable();
     t.dateTime('created_at').notNullable();
     t.dateTime('updated_at').notNullable();
+    t.string('thumbnail');
+    t.integer('duration');
     t.string('title');
-    t.text('url').notNullable();
+    t.text('video').notNullable();
 
     t.foreign('creator_id', 'videos_fk1').references('users.id');
     t.foreign('project_id', 'videos_fk2').references('projects.id');

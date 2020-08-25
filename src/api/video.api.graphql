@@ -12,19 +12,25 @@ extend type Mutation {
   deleteVideo(id: ID!): Video
 }
 
+scalar Upload
+
 type Video {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectId: Int
-  title: String!
-  url: String!
+  projectId: Int!
+  title: String
+  thumbnail: String!
+  duration: Int
+  video: String!
   description: String
 }
 
 input VideoInput {
-  title: String!
+  title: String
   description: String
-  url: String!
-  projectId: Int
+  video: Upload!
+  thumbnail: Upload!
+  duration: Int
+  projectId: Int!
 }
