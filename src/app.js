@@ -7,6 +7,17 @@ import { apiExplorer } from './api';
 import { logger } from './utils/logging';
 import depthLimit from 'graphql-depth-limit';
 import AWS from 'aws-sdk';
+import https from 'https';
+import http from 'http';
+import fs from 'fs';
+
+const configurations = {
+  // Note: You may need sudo to run on port 443
+  production: { ssl: true, port: 8080, hostname: 'example.com' },
+  development: { ssl: true, port: 8080, hostname: 'localhost' },
+};
+
+const environment = process.env.NODE_ENV || 'development';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Do not reject self signed certificates
 const port = process.env.PORT || 8080;
@@ -32,15 +43,15 @@ apiExplorer
     app.use(cookieParser());
     app.use(cors());
 
+    const config = configurations[environment];
+
     app.post('/signed-url-put-object', async (req, res) => {
       const { mimeType = 'video/webm', fileName } = req;
 
       const params = {
         Expires: 60,
         Bucket: 'uploads.blocconsulting.com',
-        key: fileName,
         Fields: {
-          'Content-Type': mimeType,
           key: fileName,
         },
       };
@@ -84,10 +95,27 @@ apiExplorer
 
     apolloServer.applyMiddleware({ app });
 
+    var server;
+    if (config.ssl) {
+      // Assumes certificates are in a .ssl folder off of the package root. Make sure
+      // these files are secured.
+      server = https.createServer(
+        {
+          key: fs.readFileSync(`./ssl/${environment}/server.key`),
+          cert: fs.readFileSync(`./ssl/${environment}/server.crt`),
+        },
+        app
+      );
+    } else {
+      server = http.createServer(app);
+    }
+
     // Run server
-    app.listen({ port }, () => {
-      logger.info(`🚀Server ready at http://localhost:${port}${apolloServer.graphqlPath}`);
-    });
+    server.listen({ port: config.port }, () =>
+      logger.info(
+        `🚀 Server ready at http${config.ssl ? 's' : ''}://${config.hostname}:${config.port}${apolloServer.graphqlPath}`
+      )
+    );
   })
   .catch((err) => {
     logger.error('Failed to load api', err);
