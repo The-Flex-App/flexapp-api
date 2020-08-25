@@ -13,11 +13,11 @@ import fs from 'fs';
 
 const configurations = {
   // Note: You may need sudo to run on port 443
-  production: { ssl: false, port: 8080, hostname: '3.8.172.18' },
+  production: { ssl: false, port: 8080, hostname: 'localhost' },
   development: { ssl: false, port: 8080, hostname: 'localhost' },
 };
 
-const environment = process.env.NODE_ENV || 'production';
+const environment = process.env.NODE_ENV || 'development';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Do not reject self signed certificates
 const port = process.env.PORT || 8080;
