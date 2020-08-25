@@ -13,8 +13,8 @@ import fs from 'fs';
 
 const configurations = {
   // Note: You may need sudo to run on port 443
-  production: { ssl: true, port: 8080, hostname: '3.8.172.18' },
-  development: { ssl: true, port: 8080, hostname: 'localhost' },
+  production: { ssl: false, port: 8080, hostname: '3.8.172.18' },
+  development: { ssl: false, port: 8080, hostname: 'localhost' },
 };
 
 const environment = process.env.NODE_ENV || 'production';
