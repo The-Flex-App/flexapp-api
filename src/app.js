@@ -45,22 +45,22 @@ apiExplorer
 
     const config = configurations[environment];
 
-    app.post('/signed-url-put-object', async (req, res) => {
-      const { mimeType = 'video/webm', fileName } = req;
+    app.get('/signed-url-put-object', async (req, res) => {
+      console.log(req.query);
+      const { fileName, fileType } = req.query;
+      const key = `uploads/${fileType}s/${fileName}`;
 
       const params = {
-        Expires: 60,
+        Expires: 3600,
         Bucket: 'uploads.blocconsulting.com',
         Fields: {
-          key: fileName,
+          key,
         },
       };
 
       const options = {
         signatureVersion: 'v4',
         region: 'eu-west-2',
-        useAccelerateEndpoint: false,
-        s3ForcePathStyle: true,
       };
 
       const client = new AWS.S3(options);
