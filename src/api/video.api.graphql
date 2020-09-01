@@ -18,7 +18,7 @@ type Video {
   updatedAt: DateTime!
   projectId: Int!
   title: String
-  thumbnail: String!
+  thumbnail: String
   duration: Int
   video: String!
   description: String
@@ -28,7 +28,7 @@ input VideoInput {
   title: String
   description: String
   video: String!
-  thumbnail: String!
+  thumbnail: String
   duration: Int
   projectId: Int!
 }
