@@ -1,7 +1,7 @@
 extend type Query {
   videoById(id: ID!): Video
 
-  videosByProject(projectId: Int): [Video]!
+  videosByProject(projectId: Int, orderBy: SortInput): [Video]!
 
   videos(first: Int, offset: Int, orderBy: SortInput): [Video!]!
 }
