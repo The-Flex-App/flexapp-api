@@ -49,8 +49,8 @@ class VideoService extends BaseService {
     return video;
   }
 
-  async findByProject(projectId, orderBy) {
-    const { field, direction = 'asc' } = orderBy;
+  async findByProject(projectId, orderBy = {}) {
+    const { field = '', direction = 'asc' } = orderBy;
 
     let query = Video.query().where('projectId', projectId);
 
