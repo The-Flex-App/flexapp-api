@@ -13,8 +13,8 @@ export const resolvers = {
       return videoService.findByProject(projectId);
     },
 
-    videos: (parent, { first, offset }, ctx, info) => {
-      return videoService.findAll(first, offset);
+    videos: (parent, { first, offset, orderBy }, ctx, info) => {
+      return videoService.findAll(first, offset, orderBy);
     },
   },
 

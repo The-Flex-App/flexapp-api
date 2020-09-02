@@ -10,8 +10,8 @@ export const resolvers = {
       return projectService.findById(id);
     },
 
-    projects: (parent, { first, offset }, ctx, info) => {
-      return projectService.findAll(first, offset);
+    projects: (parent, { first, offset, orderBy }, ctx, info) => {
+      return projectService.findAll(first, offset, orderBy);
     },
   },
 

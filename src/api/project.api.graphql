@@ -1,13 +1,23 @@
 extend type Query {
   projectById(id: ID!): Project
 
-  projects(first: Int, offset: Int): [Project!]!
+  projects(first: Int, offset: Int, orderBy: ProjectSortInput): [Project!]!
 }
 
 extend type Mutation {
   createProject(input: ProjectInput!): Project!
   editProject(id: ID!, input: ProjectInput!): Project
   deleteProject(id: ID!): Project
+}
+
+input ProjectSortInput {
+  field: String!
+  direction: ProjectSort
+}
+
+enum ProjectSort {
+  asc
+  desc
 }
 
 type Project {

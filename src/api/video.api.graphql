@@ -3,13 +3,23 @@ extend type Query {
 
   videosByProject(projectId: Int): [Video]!
 
-  videos(first: Int, offset: Int): [Video!]!
+  videos(first: Int, offset: Int, orderBy: SortInput): [Video!]!
 }
 
 extend type Mutation {
   createVideo(input: VideoInput!): Video!
   editVideo(id: ID!, input: VideoInput!): Video
   deleteVideo(id: ID!): Video
+}
+
+input SortInput {
+  field: String!
+  direction: Sort
+}
+
+enum Sort {
+  asc
+  desc
 }
 
 type Video {

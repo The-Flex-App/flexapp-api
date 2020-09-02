@@ -11,7 +11,15 @@ export default class BaseService {
     return this.model.query().whereIn('id', ids);
   }
 
-  async findAll(first = 100, offset = 1) {
-    return this.model.query();
+  async findAll(first = 100, offset = 1, orderBy) {
+    const { field, direction = 'asc' } = orderBy;
+
+    let query = this.model.query();
+
+    if (field) {
+      query = query.orderBy(field, direction);
+    }
+
+    return query;
   }
 }
