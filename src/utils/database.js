@@ -1,25 +1,10 @@
 import { knexSnakeCaseMappers, Model } from 'objection';
-import { homedir } from 'os';
 import Knex from 'knex';
+import configuration from '../../knex/knex';
 
 export function initDatabase() {
-  const dir = homedir();
-
   const databaseClient = Knex({
-    client: 'sqlite3',
-
-    connection: {
-      filename: `${dir}/walkietalkie.sqlite`,
-    },
-
-    pool: {
-      afterCreate: (conn, cb) => {
-        conn.run('PRAGMA foreign_keys = ON;', cb);
-      },
-    },
-
-    useNullAsDefault: true,
-
+    ...configuration,
     ...knexSnakeCaseMappers(),
   });
 
