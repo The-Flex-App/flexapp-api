@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 import express from 'express';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 
+require('dotenv').config();
+
 const port = process.env.PORT || 8080;
 
 // Define APIs using GraphQL SDL
