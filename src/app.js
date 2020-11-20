@@ -45,7 +45,6 @@ apiExplorer
     const config = configurations[environment];
 
     app.get('/signed-url', async (req, res) => {
-      console.log(req.query);
       const { fileName, fileType } = req.query;
       const key = `uploads/${fileType}s/${fileName}`;
 
