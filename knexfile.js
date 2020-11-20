@@ -2,9 +2,9 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host: 'ls-e0a43bbdb27df80f3757b8623dd420fff61270ef.cbid7u1cqbl9.eu-west-2.rds.amazonaws.com',
+      host: 'ls-02d714dd85e3659b1335be3dfecc3576fee25204.cltvmbclnwmk.eu-west-2.rds.amazonaws.com',
       user: 'dbmasteruser',
-      password: '_SD1~eaB1U(|Vke4_Tm87=z}cS`kWt5-',
+      password: '$WM)C.32wS.yEOrTA_|(H0|VDMMPar6E',
       database: 'flexapp_dev',
     },
     migrations: {
@@ -18,9 +18,9 @@ module.exports = {
   production: {
     client: 'mysql',
     connection: {
-      host: 'ls-e0a43bbdb27df80f3757b8623dd420fff61270ef.cbid7u1cqbl9.eu-west-2.rds.amazonaws.com',
+      host: 'ls-02d714dd85e3659b1335be3dfecc3576fee25204.cltvmbclnwmk.eu-west-2.rds.amazonaws.com',
       user: 'dbmasteruser',
-      password: '_SD1~eaB1U(|Vke4_Tm87=z}cS`kWt5-',
+      password: '$WM)C.32wS.yEOrTA_|(H0|VDMMPar6E',
       database: 'flexapp_prod',
     },
     migrations: {
