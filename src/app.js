@@ -13,8 +13,8 @@ import fs from 'fs';
 
 const configurations = {
   // Note: You may need sudo to run on port 443
-  production: { ssl: false, port: 8080, hostname: 'localhost' },
-  development: { ssl: false, port: 8080, hostname: 'localhost' },
+  production: { ssl: false, port: 8080, hostname: 'localhost', bucket: process.env.BUCKET_NAME_PROD },
+  development: { ssl: false, port: 80, hostname: 'localhost', bucket: process.env.BUCKET_NAME },
 };
 
 const environment = process.env.NODE_ENV || 'development';
@@ -25,8 +25,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Do not reject self signed cer
 initDatabase();
 
 AWS.config.update({
-  accessKeyId: 'AKIAT2IQZUFMBK4AH5EN',
-  secretAccessKey: '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',
+  accessKeyId: 'AKIAWCCH26RPLCRR2KFJ',
+  secretAccessKey: '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',
   region: 'eu-west-2',
   signatureVersion: 'v4',
 });
@@ -44,14 +44,14 @@ apiExplorer
 
     const config = configurations[environment];
 
-    app.get('/signed-url-put-object', async (req, res) => {
+    app.get('/signed-url', async (req, res) => {
       console.log(req.query);
       const { fileName, fileType } = req.query;
       const key = `uploads/${fileType}s/${fileName}`;
 
       const params = {
         Expires: 3600,
-        Bucket: 'uploads.blocconsulting.com',
+        Bucket: config.bucket,
         Fields: {
           key,
         },
