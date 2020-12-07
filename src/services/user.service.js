@@ -85,6 +85,10 @@ class UserService extends BaseService {
   async findByEmail(email) {
     return User.query().findOne('email', email);
   }
+
+  async findById(userid) {
+    return User.query().findOne('userId', userid);
+  }
 }
 
 export const userService = new UserService();

@@ -1,6 +1,5 @@
 extend type Query {
   projectById(id: ID!): Project
-
   projects(first: Int, offset: Int, orderBy: ProjectSortInput): [Project!]!
 }
 

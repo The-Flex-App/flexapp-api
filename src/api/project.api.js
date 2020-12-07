@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import { projectService } from '../services/project.service';
-import { UserDataLoader } from '../dataloaders/user.dataloader';
 
 export const typeDefs = readFileSync(`${__dirname}/project.api.graphql`, 'utf8');
 

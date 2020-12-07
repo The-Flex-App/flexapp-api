@@ -7,15 +7,16 @@ export default class User extends BaseModel {
     type: 'object',
 
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'bigInteger' },
+      userName: { type: 'string', maxLength: 255 },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
-      fullName: { type: 'string', minLength: 1, maxLength: 255 },
+      firstName: { type: 'string', minLength: 1, maxLength: 255 },
+      lastName: { type: 'string', minLength: 1, maxLength: 255 },
       email: { type: 'string', minLength: 1, maxLength: 255, format: 'email' },
-      password: { type: 'string', minLength: 1, maxLength: 255 },
-      role: { type: 'string', minLength: 1, maxLength: 255 },
+      workspaceId: { type: 'string' }
     },
 
-    required: ['fullName', 'email', 'role'],
+    required: ['firstName', 'lastName', 'email'],
   };
 }
