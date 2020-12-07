@@ -1,0 +1,14 @@
+extend type Query {
+  userWorkspaceInfoById(workspaceId: String!): UserWorkspace!
+  userWorkspaceInfoByRole(role: String!):UserWorkspace!
+}
+
+type UserWorkspace {
+  id: String!
+  userId: String!
+  workspaceId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  role: String!
+}
+
