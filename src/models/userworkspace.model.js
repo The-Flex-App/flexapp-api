@@ -11,8 +11,8 @@ export default class UserWorkspace extends BaseModel {
       id: { type: 'integer' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
-      userId: { type: 'string'},
-      workspaceId:{ type: 'string'},
+      userId: { type: 'bigInteger' },
+      workspaceId: { type: 'string' },
     },
 
     required: ['workspaceId'],

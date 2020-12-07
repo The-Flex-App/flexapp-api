@@ -1,5 +1,5 @@
 extend type Query {
-  userWorkspaceInfoById(workspaceId: String!): UserWorkspace!
+  getUserWorkSpaces(workspaceId: String!): UserWorkspace!
   userWorkspaceInfoByRole(role: String!):UserWorkspace!
 }
 

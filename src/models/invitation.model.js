@@ -12,7 +12,8 @@ export default class Invitation extends BaseModel {
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
       expiryDate: { type: 'string', format: 'date-time' },
-      userId: { type: 'string' },
+      userId: { type: 'bigInteger' },
+      used: { type: 'boolean' },
       workspaceId: { type: 'string' },
     },
 

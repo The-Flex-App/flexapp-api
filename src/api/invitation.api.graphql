@@ -1,6 +1,5 @@
 extend type Query {
   invitationById(id: ID!): Invitation!
-  getExpiryDateById(id:ID!): DateTime
 }
 
 extend type Mutation {

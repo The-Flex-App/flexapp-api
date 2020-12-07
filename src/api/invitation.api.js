@@ -8,11 +8,6 @@ export const resolvers = {
     invitationById: (parent, { id }, ctx, info) => {
       return invitationService.findById(id);
     },
-
-    getExpiryDateById: (parent, { id }, ctx, info) => {
-        return invitationService.getExpiryDate(id);
-      },
-
   },
 
   Mutation: {

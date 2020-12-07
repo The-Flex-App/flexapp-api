@@ -29,11 +29,6 @@ class InvitationService extends BaseService {
     async findById(id) {
         return Invitation.query().findOne('id', id);
     }
-
-    async getExpiryDate(id) {
-        const invitation = await this.findById(id);
-        return invitation.expiryDate;
-    }
 }
 
 export const invitationService = new InvitationService();

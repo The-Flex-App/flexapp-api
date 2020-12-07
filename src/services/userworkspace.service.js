@@ -13,6 +13,10 @@ class UserWorkspaceService extends BaseService {
   async findByRole(role) {
     return UserWorkspace.query().findOne('role', role);
   }
+
+  // async createUserWorkspace(){
+    // user work space creation code will go here 
+  // }
 }
 
 export const userWorkspaceService = new UserWorkspaceService();

@@ -5,7 +5,7 @@ export const typeDefs = readFileSync(`${__dirname}/userworkspace.api.graphql`, '
 
 export const resolvers = {
   Query: {
-    userWorkspaceInfoById: (parent, { workspaceId }, ctx, info) => {
+    getUserWorkSpaces: (parent, { workspaceId }, ctx, info) => {
       return userWorkspaceService.findByWorkspaceId(workspaceId);
     }, 
 
