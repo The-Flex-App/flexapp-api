@@ -13,8 +13,20 @@ import fs from 'fs';
 
 const configurations = {
   // Note: You may need sudo to run on port 443
-  production: { ssl: false, port: 8080, hostname: 'localhost', bucket: 'devmedia.flexapp.co.uk' },
-  development: { ssl: false, port: 8080, hostname: 'localhost', bucket: 'media.flexapp.co.uk' },
+  production: {
+    ssl: false,
+    port: 8080,
+    hostname: 'localhost',
+    bucket: 'devmedia.flexapp.co.uk',
+    cloudfront: 'https://d2kpolfe7gcq1a.cloudfront.net',
+  },
+  development: {
+    ssl: false,
+    port: 8080,
+    hostname: 'localhost',
+    bucket: 'media.flexapp.co.uk',
+    cloudfront: 'https://media.flexapp.co.uk',
+  },
 };
 
 const environment = process.env.NODE_ENV || 'development';
