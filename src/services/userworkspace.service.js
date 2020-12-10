@@ -14,9 +14,17 @@ class UserWorkspaceService extends BaseService {
     return UserWorkspace.query().findOne('role', role);
   }
 
-  // async createUserWorkspace(){
-    // user work space creation code will go here 
-  // }
+  async createUserWorkspace(input, trx) {
+    const { userId, workspaceId, role } = input;
+    try {
+      const userworkspace = await UserWorkspace.query(trx).insert(input);
+      // await trx.commit();
+      return userworkspace;
+    } catch (err) {
+      // await trx.rollback();
+      throw err;
+    }
+  }
 }
 
 export const userWorkspaceService = new UserWorkspaceService();

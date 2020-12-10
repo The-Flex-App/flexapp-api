@@ -17,6 +17,6 @@ export default class User extends BaseModel {
       workspaceId: { type: 'string' }
     },
 
-    required: ['firstName', 'lastName', 'email'],
+      required: ['firstName', 'lastName', 'email'],
   };
 }
