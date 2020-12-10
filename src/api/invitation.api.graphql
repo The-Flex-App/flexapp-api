@@ -3,7 +3,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createInvitaton(input: InvitationInput!): Invitation!
+  createInvitaton(input: InvitationInput!): invitationId: ID!
   deleteInvitation(id: ID!): Invitation
 }
 
@@ -17,7 +17,6 @@ type Invitation {
 }
 
 input InvitationInput {
-  id: String!
   workspaceId: String!
   userId: String!
 }

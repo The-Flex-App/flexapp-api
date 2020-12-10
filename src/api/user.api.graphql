@@ -1,9 +1,37 @@
 extend type Query {
-  userById(userid: String!): User!
+  userById(id: String!): User!
+  getUserInfo(id: String): UserInfo!
 }
 
 extend type Mutation {
-  createUser(input: UserInput!): User!
+  createUser(input: UserInput): UserInfo
+}
+
+type UserInfo {
+  firstName: String!
+  lastName: String!
+  workspaceId :String!
+  email: String!
+  memberWorkspaceInfo: [MemberWorkSpace!]!
+  ownerWorkspaceInfo: [OwnerWorkSpace!]!
+}
+
+type MemberWorkSpace {
+  id: String!
+  userName: String
+  email: String!
+  firstName: String!
+  lastName: String!
+  workspaceId :String!
+}
+
+type OwnerWorkSpace {
+  id: String!
+  userName: String
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: String!
 }
 
 type User {
@@ -12,8 +40,8 @@ type User {
   email: String!
   firstName: String!
   lastName: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  createdAt: DateTime
+  updatedAt: DateTime
   workspaceId :String!
 }
 

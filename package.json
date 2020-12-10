@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": "https://github.com/Yoh0xFF/graphql-example",
   "scripts": {
-    "migrate": "knex migrate:latest && knex seed:run",
+    "migrate": "knex migrate:latest",
     "watch": "export DEBUG=knex:query && npm run migrate && nodemon --exec babel-node src/app.js",
     "build": "babel src --out-dir dist --copy-files",
     "serve": "npm run build && dotenv npm run migrate && dotenv node dist/app.js",

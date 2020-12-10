@@ -1,6 +1,8 @@
 import BaseService from './base.service';
+import { userWorkspaceService } from './userworkspace.service'
 import User from '../models/user.model';
 import { compare, hash } from 'bcrypt';
+import { transaction } from 'objection';
 import { UserInputError } from 'apollo-server-express';
 
 const HASH_ROUNDS = 12;
@@ -26,15 +28,47 @@ class UserService extends BaseService {
     return user;
   }
 
-  async createUser(editUserReq) {
-    editUserReq.password = await hash(editUserReq.password, HASH_ROUNDS);
-    delete editUserReq.rePassword;
+  async getUserInfo(userid) {
+    const ownerInfo = await User.query().findOne('id', userid);
+    const workspaceId = ownerInfo.workspaceId;
 
-    editUserReq.role = editUserReq.role || 'USER';
+    const ownerWorkspaceInfo = await User.query().select('users.id', 'users.first_name', 'users.last_name', 'users.email'
+      , 'userworkspace.role', 'users.user_name')
+      .innerJoin('users_workspace as userworkspace', 'users.id', 'userworkspace.user_id')
+      .where('userworkspace.workspace_id', workspaceId)
+      .where('userworkspace.role', 'member')
 
-    const user = await User.query().insert(editUserReq);
+    const memberWorkspaceInfo = await User.query().select('users.id', 'users.first_name', 'users.last_name', 'users.email',
+      'userworkspace.role', 'userworkspace.user_id', 'userworkspace.workspace_id')
+      .innerJoin('users_workspace as userworkspace', 'users.workspace_id', 'userworkspace.workspace_id')
+      .where('userworkspace.user_id', userid)
+      .where('userworkspace.role', 'member')
 
-    return user;
+    const userInfo = { ...ownerInfo, ownerWorkspaceInfo, memberWorkspaceInfo }
+
+    return userInfo;
+
+  }
+
+
+  async createUser(input) {
+    let trx;
+    try {
+      trx = await transaction.start(User.knex());
+      const userId = input.id;
+      const workspaceId = 'ws' + userId
+      input.workspaceId = workspaceId;
+      await User.query(trx).insert(input);
+      const role = 'owner';
+      const workspaceinput = { userId, workspaceId, role };
+      await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
+      await trx.commit();
+      const userInfo = await this.getUserInfo(userId);
+      return userInfo;
+    } catch (err) {
+      await trx.rollback();
+      throw err;
+    }
   }
 
   async editUser(id, editUserReq) {
@@ -86,8 +120,8 @@ class UserService extends BaseService {
     return User.query().findOne('email', email);
   }
 
-  async findById(userid) {
-    return User.query().findOne('userId', userid);
+  async findById(id) {
+    return User.query().findOne('id', id);
   }
 }
 

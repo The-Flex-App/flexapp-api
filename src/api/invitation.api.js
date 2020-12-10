@@ -1,7 +1,10 @@
-import { readFileSync } from 'fs';
-import { invitationService } from '../services/invitation.service';
+import { readFileSync } from "fs";
+import { invitationService } from "../services/invitation.service";
 
-export const typeDefs = readFileSync(`${__dirname}/invitation.api.graphql`, 'utf8');
+export const typeDefs = readFileSync(
+  `${__dirname}/invitation.api.graphql`,
+  "utf8"
+);
 
 export const resolvers = {
   Query: {
@@ -12,9 +15,8 @@ export const resolvers = {
 
   Mutation: {
     createInvitaton: async (parent, { input }, ctx, info) => {
-      console.log(input);
       if (await invitationService.findById(input.id)) {
-        throw new Error('Invitation already exists');
+        throw new Error("Invitation already exists");
       }
       return invitationService.createInvitation(input);
     },
