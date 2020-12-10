@@ -15,11 +15,6 @@ export const resolvers = {
 
   Mutation: {
     createInvitaton: async (parent, { input }, ctx, info) => {
-      console.log(input);
-      const date = new Date();
-      // add a day to current date
-      input.expiryDate = new Date().setDate(new Date().getDate() + 1).ISOToString();
-
       if (await invitationService.findById(input.id)) {
         throw new Error("Invitation already exists");
       }
