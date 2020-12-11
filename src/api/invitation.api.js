@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import { invitationService } from "../services/invitation.service";
+import { userService } from "../services/user.service";
 
 export const typeDefs = readFileSync(
   `${__dirname}/invitation.api.graphql`,
@@ -15,8 +16,10 @@ export const resolvers = {
 
   Mutation: {
     createInvitaton: async (parent, { input }, ctx, info) => {
-      if (await invitationService.findById(input.id)) {
-        throw new Error("Invitation already exists");
+      const { workspaceId, userId } = input;
+      const isValidUser = await userService.isValidateUser(userId, workspaceId);
+      if (!isValidUser) {
+        throw new Error("Invalid user");
       }
       return invitationService.createInvitation(input);
     },
