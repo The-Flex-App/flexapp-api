@@ -51,4 +51,6 @@ input UserInput {
   email: String!
   firstName: String!
   lastName: String!
+  inviteId: ID
+  workspaceId: String
 }
