@@ -1,4 +1,5 @@
 import BaseService from './base.service';
+import UserService, { userService } from './user.service';
 import UserWorkspace from '../models/userworkspace.model';
 
 class UserWorkspaceService extends BaseService {
@@ -15,7 +16,6 @@ class UserWorkspaceService extends BaseService {
   }
 
   async createUserWorkspace(input, trx) {
-    const { userId, workspaceId, role } = input;
     try {
       const userworkspace = await UserWorkspace.query(trx).insert(input);
       // await trx.commit();
@@ -24,6 +24,17 @@ class UserWorkspaceService extends BaseService {
       // await trx.rollback();
       throw err;
     }
+  }
+
+  async removeUserWorkspace(input) {
+    const { userId, workspaceId, currentUserId } = input;
+    await UserWorkspace.query()
+      .delete()
+      .where('user_id', userId)
+      .where('role', 'member')
+      .where('workspace_id', workspaceId);
+
+    return await userService.getUserInfo(currentUserId);
   }
 }
 

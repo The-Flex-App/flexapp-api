@@ -9,14 +9,11 @@ class ProjectService extends BaseService {
 
   async createProject(input) {
     let trx;
-    input.creatorId = 1;
+
     try {
       trx = await transaction.start(Project.knex());
-
       const project = await Project.query(trx).insert(input);
-
       await trx.commit();
-
       return project;
     } catch (err) {
       await trx.rollback();
@@ -51,6 +48,16 @@ class ProjectService extends BaseService {
 
   async findByTitle(title) {
     return Project.query().findOne('title', title);
+  }
+
+  async findProjectByWorkspaceId(workspaceId, orderBy = {}) {
+    const { field = '', direction = 'asc' } = orderBy;
+
+    let query = Project.query().where('workspaceId', workspaceId);
+    if (field) {
+      query = query.orderBy(field, direction);
+    }
+    return query;
   }
 }
 

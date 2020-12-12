@@ -1,7 +1,7 @@
-import BaseService from "./base.service";
-import Invitation from "../models/invitation.model";
-import { transaction } from "objection";
-import { truncate } from "lodash";
+import BaseService from './base.service';
+import { userService } from './user.service';
+import Invitation from '../models/invitation.model';
+import { transaction } from 'objection';
 
 class InvitationService extends BaseService {
   constructor() {
@@ -40,23 +40,31 @@ class InvitationService extends BaseService {
     }
   }
 
-  isExiredLink(expiryDate) {
+  isExiredLink(expiryDate, used) {
     const oneDay = 1 * 24 * 60 * 60 * 1000;
     const currentDate = new Date().getTime();
     const interval = expiryDate - currentDate;
-    if (interval > oneDay) {
+    const isUsed = used === '1';
+    if (interval > oneDay || isUsed) {
       return true;
     }
     return false;
   }
 
   async validateInvite(input) {
-    const { workspaceId: inputWorkspaceId, inviteId } = input;
+    const { workspaceId: inputWorkspaceId, inviteId, id } = input;
+    const user = await userService.findById(id);
+    const isValidUser = user && user.workspaceId !== inputWorkspaceId;
     const invite = await this.findById(inviteId);
     if (invite) {
-      const { expiryDate, workspaceId } = invite;
-      const isExpiredLink = this.isExiredLink(new Date(expiryDate));
-      if (workspaceId && workspaceId === inputWorkspaceId && !isExpiredLink) {
+      const { expiryDate, workspaceId, used } = invite;
+      const isExpiredLink = this.isExiredLink(new Date(expiryDate), used);
+      if (
+        workspaceId &&
+        workspaceId === inputWorkspaceId &&
+        !isExpiredLink &&
+        isValidUser
+      ) {
         return true;
       }
     }
@@ -70,7 +78,7 @@ class InvitationService extends BaseService {
   }
 
   async findById(id) {
-    return Invitation.query().findOne("id", id);
+    return Invitation.query().findOne('id', id);
   }
 }
 

@@ -9,7 +9,6 @@ export default class Video extends BaseModel {
 
     properties: {
       id: { type: 'integer' },
-      creatorId: { type: 'integer' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
       title: { type: 'string', minLength: 1, maxLength: 255 },
@@ -18,9 +17,11 @@ export default class Video extends BaseModel {
       thumbnail: { type: 'string', minLength: 1, maxLength: 1000 },
       duration: { type: 'integer' },
       projectId: { type: 'integer' },
+      userId: { type: 'string', maxLength: 36 },
+      workspaceId: { type: 'string' },
     },
 
-    required: ['creatorId', 'projectId', 'video'],
+    required: ['userId', 'workspaceId', 'projectId', 'video'],
   };
 
   static relationMappings = {

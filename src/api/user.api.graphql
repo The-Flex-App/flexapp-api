@@ -8,9 +8,11 @@ extend type Mutation {
 }
 
 type UserInfo {
+  id: ID!
   firstName: String!
   lastName: String!
-  workspaceId :String!
+  role: String!
+  workspaceId: String!
   email: String!
   memberWorkspaceInfo: [MemberWorkSpace!]!
   ownerWorkspaceInfo: [OwnerWorkSpace!]!
@@ -22,7 +24,7 @@ type MemberWorkSpace {
   email: String!
   firstName: String!
   lastName: String!
-  workspaceId :String!
+  workspaceId: String!
 }
 
 type OwnerWorkSpace {
@@ -31,6 +33,7 @@ type OwnerWorkSpace {
   email: String!
   firstName: String!
   lastName: String!
+  workspaceId: String!
   role: String!
 }
 
@@ -42,7 +45,7 @@ type User {
   lastName: String!
   createdAt: DateTime
   updatedAt: DateTime
-  workspaceId :String!
+  workspaceId: String!
 }
 
 input UserInput {
