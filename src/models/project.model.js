@@ -9,14 +9,14 @@ export default class Project extends BaseModel {
 
     properties: {
       id: { type: 'integer' },
-      creatorId: { type: 'integer' },
+      userId: { type: 'string', maxLength: 36 },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
       title: { type: 'string', minLength: 1, maxLength: 255 },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
     },
 
-    required: ['creatorId', 'title'],
+    required: ['userId', 'title'],
   };
 
   static relationMappings = {
@@ -24,7 +24,7 @@ export default class Project extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: `${__dirname}/user.model`,
       join: {
-        from: 'projects.creatorId',
+        from: 'projects.userId',
         to: 'users.id',
       },
     },

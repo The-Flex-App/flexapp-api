@@ -1,6 +1,16 @@
 extend type Query {
   getUserWorkSpaces(workspaceId: String!): UserWorkspace!
-  userWorkspaceInfoByRole(role: String!):UserWorkspace!
+  userWorkspaceInfoByRole(role: String!): UserWorkspace!
+}
+
+extend type Mutation {
+  removeUserWorkspace(input: UserWorkspaceInput): UserInfo
+}
+
+input UserWorkspaceInput {
+  userId: String!
+  workspaceId: String!
+  currentUserId: String!
 }
 
 type UserWorkspace {
@@ -11,4 +21,3 @@ type UserWorkspace {
   updatedAt: DateTime!
   role: String!
 }
-

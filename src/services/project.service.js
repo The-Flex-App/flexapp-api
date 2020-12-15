@@ -1,4 +1,5 @@
 import BaseService from './base.service';
+import { userService } from '../services/user.service';
 import Project from '../models/project.model';
 import { transaction } from 'objection';
 
@@ -9,14 +10,14 @@ class ProjectService extends BaseService {
 
   async createProject(input) {
     let trx;
-    input.creatorId = 1;
+
     try {
       trx = await transaction.start(Project.knex());
-
+      const user = await userService.findByWorkspaceId(input.workspaceId);
+      delete input.workspaceId;
+      input.userId = user.id;
       const project = await Project.query(trx).insert(input);
-
       await trx.commit();
-
       return project;
     } catch (err) {
       await trx.rollback();
@@ -49,8 +50,33 @@ class ProjectService extends BaseService {
     return project;
   }
 
-  async findByTitle(title) {
-    return Project.query().findOne('title', title);
+  async findByTitle(title, userId) {
+    return Project.query().findOne('title', title).where('userId', userId);
+  }
+
+  async validateProject(title, workspaceId) {
+    const user = await userService.findByWorkspaceId(workspaceId);
+    if (user) {
+      const project = await this.findByTitle(title, user.id);
+      if (project) {
+        return true;
+      }
+      return false;
+    } else {
+      throw new Error('Invalid user or workspace');
+    }
+  }
+
+  async findProjectByWorkspaceId(workspaceId, orderBy = {}) {
+    const { field = '', direction = 'asc' } = orderBy;
+    const user = await userService.findByWorkspaceId(workspaceId);
+    if (user) {
+      let query = await Project.query().where('userId', user.id);
+      if (field) {
+        query = query.orderBy(field, direction);
+      }
+      return query;
+    }
   }
 }
 

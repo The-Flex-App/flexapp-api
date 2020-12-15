@@ -1,5 +1,13 @@
 extend type Query {
   projectById(id: ID!): Project
+
+  projectByWorkspaceId(
+    workspaceId: String!
+    orderBy: ProjectSortInput
+    first: Int
+    offset: Int
+  ): [Project]!
+
   projects(first: Int, offset: Int, orderBy: ProjectSortInput): [Project!]!
 }
 
@@ -30,4 +38,5 @@ type Project {
 input ProjectInput {
   title: String!
   description: String
+  workspaceId: String
 }

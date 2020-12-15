@@ -9,7 +9,6 @@ class VideoService extends BaseService {
 
   async createVideo(input) {
     let trx;
-    input.creatorId = 1;
     try {
       trx = await transaction.start(Video.knex());
 
@@ -49,12 +48,12 @@ class VideoService extends BaseService {
     return video;
   }
 
-  async findByProject(projectId, orderBy = {}) {
+  async findByProject(projectId, workspaceId, orderBy = {}) {
     const { field = '', direction = 'asc' } = orderBy;
 
     let query = Video.query().where('projectId', projectId);
 
-    if (field) {
+    if (field && query) {
       query = query.orderBy(field, direction);
     }
 

@@ -1,10 +1,10 @@
-import BaseService from "./base.service";
-import { userWorkspaceService } from "./userworkspace.service";
-import User from "../models/user.model";
-import { compare, hash } from "bcrypt";
-import { transaction } from "objection";
-import { UserInputError } from "apollo-server-express";
-import { invitationService } from "./invitation.service";
+import BaseService from './base.service';
+import { userWorkspaceService } from './userworkspace.service';
+import User from '../models/user.model';
+import { compare, hash } from 'bcrypt';
+import { transaction } from 'objection';
+import { UserInputError } from 'apollo-server-express';
+import { invitationService } from './invitation.service';
 
 const HASH_ROUNDS = 12;
 
@@ -29,46 +29,58 @@ class UserService extends BaseService {
     return user;
   }
 
-  async getUserInfo(userid) {
-    const ownerInfo = await User.query().findOne("id", userid);
-    const workspaceId = ownerInfo.workspaceId;
+  async getUserInfo(userid, workspaceid) {
+    const ownerInfo = await User.query().findOne('id', userid);
+    const workspaceId = workspaceid || ownerInfo.workspaceId;
+    let role;
+    if (workspaceid) {
+      role = workspaceid === ownerInfo.workspaceId ? 'owner' : 'member';
+    } else {
+      role = 'owner';
+    }
 
     const ownerWorkspaceInfo = await User.query()
       .select(
-        "users.id",
-        "users.first_name",
-        "users.last_name",
-        "users.email",
-        "userworkspace.role",
-        "users.user_name"
+        'users.id',
+        'users.first_name',
+        'users.last_name',
+        'users.email',
+        'userworkspace.role',
+        'users.user_name',
+        'users.workspace_id'
       )
       .innerJoin(
-        "users_workspace as userworkspace",
-        "users.id",
-        "userworkspace.user_id"
+        'users_workspace as userworkspace',
+        'users.id',
+        'userworkspace.user_id'
       )
-      .where("userworkspace.workspace_id", workspaceId)
-      .where("userworkspace.role", "member");
+      .where('userworkspace.workspace_id', workspaceId)
+      .where('userworkspace.role', 'member');
 
     const memberWorkspaceInfo = await User.query()
       .select(
-        "users.id",
-        "users.first_name",
-        "users.last_name",
-        "users.email",
-        "userworkspace.role",
-        "userworkspace.user_id",
-        "userworkspace.workspace_id"
+        'users.id',
+        'users.first_name',
+        'users.last_name',
+        'users.email',
+        'userworkspace.role',
+        'userworkspace.user_id',
+        'userworkspace.workspace_id'
       )
       .innerJoin(
-        "users_workspace as userworkspace",
-        "users.workspace_id",
-        "userworkspace.workspace_id"
+        'users_workspace as userworkspace',
+        'users.workspace_id',
+        'userworkspace.workspace_id'
       )
-      .where("userworkspace.user_id", userid)
-      .where("userworkspace.role", "member");
+      .where('userworkspace.user_id', userid)
+      .where('userworkspace.role', 'member');
 
-    const userInfo = { ...ownerInfo, ownerWorkspaceInfo, memberWorkspaceInfo };
+    const userInfo = {
+      ...ownerInfo,
+      role,
+      ownerWorkspaceInfo,
+      memberWorkspaceInfo,
+    };
 
     return userInfo;
   }
@@ -82,16 +94,16 @@ class UserService extends BaseService {
       const userId = input.id;
       // invitation flow for a member user
       if (existingUser && workspaceId && inviteId) {
-        const workspaceinput = { userId, workspaceId, role: "member" };
+        const workspaceinput = { userId, workspaceId, role: 'member' };
         const invitationDetails = { id: parseInt(inviteId), workspaceId };
         await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
         await invitationService.editInvite(invitationDetails, trx);
       } else {
         // normal user flow
-        const userWorkspaceId = "ws" + userId;
+        const userWorkspaceId = 'ws' + userId;
         input.workspaceId = userWorkspaceId;
         await User.query(trx).insert(input);
-        const role = "owner";
+        const role = 'owner';
         const workspaceinput = { userId, workspaceId: userWorkspaceId, role };
         await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
       }
@@ -116,7 +128,7 @@ class UserService extends BaseService {
       const user = await this.findByEmail(editUserReq.email);
 
       if (user && user.id !== id) {
-        throw new UserInputError("Email address exists!");
+        throw new UserInputError('Email address exists!');
       }
     }
 
@@ -159,11 +171,15 @@ class UserService extends BaseService {
   }
 
   async findByEmail(email) {
-    return User.query().findOne("email", email);
+    return User.query().findOne('email', email);
   }
 
   async findById(id) {
-    return User.query().findOne("id", id);
+    return User.query().findOne('id', id);
+  }
+
+  async findByWorkspaceId(workspaceId) {
+    return User.query().findOne('workspaceId', workspaceId);
   }
 }
 
