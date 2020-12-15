@@ -15,7 +15,7 @@ export default class UserWorkspace extends BaseModel {
       workspaceId: { type: 'string' },
     },
 
-    required: ['workspaceId'],
+    required: ['userId', 'workspaceId'],
   };
 
   static relationMappings = {
@@ -23,7 +23,7 @@ export default class UserWorkspace extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: `${__dirname}/user.model`,
       join: {
-        from: 'invitations.userId',
+        from: 'users_workspace.userId',
         to: 'users.id',
       },
     },

@@ -24,10 +24,9 @@ export const resolvers = {
 
   Mutation: {
     createProject: async (parent, { input }, ctx, info) => {
-      if (await projectService.findByTitle(input.title)) {
+      const { title, workspaceId } = input;
+      if (await projectService.validateProject(title, workspaceId)) {
         throw new Error('Project already exists');
-      } else if (!userService.findByWorkspaceId(input.workspaceId)) {
-        throw new Error('Invalid user or workspace');
       }
       return projectService.createProject(input);
     },

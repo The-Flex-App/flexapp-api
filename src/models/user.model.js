@@ -1,10 +1,10 @@
-import BaseModel from "./base.model";
+import BaseModel from './base.model';
 
 export default class User extends BaseModel {
-  static tableName = "users";
+  static tableName = 'users';
 
   static jsonSchema = {
-    type: "object",
+    type: 'object',
 
     properties: {
       id: { type: 'string', maxLength: 36 },
@@ -14,9 +14,9 @@ export default class User extends BaseModel {
       firstName: { type: 'string', minLength: 1, maxLength: 255 },
       lastName: { type: 'string', minLength: 1, maxLength: 255 },
       email: { type: 'string', minLength: 1, maxLength: 255, format: 'email' },
-      workspaceId: { type: 'string' }
+      workspaceId: { type: 'string' },
     },
 
-    required: ["firstName", "lastName", "email"],
+    required: ['firstName', 'lastName', 'email'],
   };
 }

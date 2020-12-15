@@ -38,6 +38,5 @@ type Project {
 input ProjectInput {
   title: String!
   description: String
-  userId: String
   workspaceId: String
 }

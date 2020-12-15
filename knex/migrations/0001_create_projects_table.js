@@ -8,7 +8,6 @@ exports.up = (knex, Promise) => {
     t.string('title').notNullable();
     t.text('description');
     t.string('user_id').notNullable();
-    t.string('workspace_id').notNullable();
 
     t.foreign('user_id', 'projects_fk1').references('users.id');
   });

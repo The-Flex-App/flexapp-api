@@ -17,11 +17,9 @@ export default class Video extends BaseModel {
       thumbnail: { type: 'string', minLength: 1, maxLength: 1000 },
       duration: { type: 'integer' },
       projectId: { type: 'integer' },
-      userId: { type: 'string', maxLength: 36 },
-      workspaceId: { type: 'string' },
     },
 
-    required: ['userId', 'workspaceId', 'projectId', 'video'],
+    required: ['projectId', 'video'],
   };
 
   static relationMappings = {
@@ -29,7 +27,7 @@ export default class Video extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: `${__dirname}/user.model`,
       join: {
-        from: 'projects.creatorId',
+        from: 'projects.userId',
         to: 'users.id',
       },
     },

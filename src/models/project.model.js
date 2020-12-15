@@ -10,14 +10,13 @@ export default class Project extends BaseModel {
     properties: {
       id: { type: 'integer' },
       userId: { type: 'string', maxLength: 36 },
-      workspaceId: { type: 'string' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
       title: { type: 'string', minLength: 1, maxLength: 255 },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
     },
 
-    required: ['userId', 'workspaceId', 'title'],
+    required: ['userId', 'title'],
   };
 
   static relationMappings = {

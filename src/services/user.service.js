@@ -179,7 +179,7 @@ class UserService extends BaseService {
   }
 
   async findByWorkspaceId(workspaceId) {
-    return User.query().findOne('workspace_id', workspaceId);
+    return User.query().findOne('workspaceId', workspaceId);
   }
 }
 

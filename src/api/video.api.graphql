@@ -1,11 +1,7 @@
 extend type Query {
   videoById(id: ID!): Video
 
-  videosByProject(
-    projectId: Int
-    workspaceId: String!
-    orderBy: SortInput
-  ): [Video]!
+  videosByProject(projectId: Int, orderBy: SortInput): [Video]!
 
   videos(first: Int, offset: Int, orderBy: SortInput): [Video!]!
 }
@@ -45,6 +41,4 @@ input VideoInput {
   thumbnail: String
   duration: Int
   projectId: Int!
-  userId: String!
-  workspaceId: String!
 }
