@@ -9,7 +9,7 @@ exports.up = (knex, Promise) => {
     t.text('description');
     t.string('user_id').notNullable();
 
-    t.foreign('user_id', 'projects_fk1').references('users.id');
+    // t.foreign('user_id', 'projects_fk1').references('users.id');
   });
 };
 
