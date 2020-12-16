@@ -9,7 +9,7 @@ exports.up = (knex, Promise) => {
     t.dateTime('updated_at').notNullable();
     t.string('role').notNullable();
 
-     t.foreign('user_id', 'users_workspace_fk1').references('users.id');
+    //  t.foreign('user_id', 'users_workspace_fk1').references('users.id');
   });
 };
 

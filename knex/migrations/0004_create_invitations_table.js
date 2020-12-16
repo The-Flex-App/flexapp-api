@@ -9,8 +9,8 @@ exports.up = (knex, Promise) => {
     t.string('user_id').notNullable();
     t.string('workspace_id').notNullable();
     t.string('used').notNullable();
-     
-    t.foreign('user_id', 'invitations_fk1').references('users.id');
+
+    // t.foreign('user_id', 'invitations_fk1').references('users.id');
   });
 };
 
