@@ -14,27 +14,17 @@ type UserInfo {
   role: String!
   workspaceId: String!
   email: String!
-  memberWorkspaceInfo: [MemberWorkSpace!]!
-  ownerWorkspaceInfo: [OwnerWorkSpace!]!
+  workspaces: [info!]!
+  workspaceMembers: [info!]!
 }
 
-type MemberWorkSpace {
+type info {
   id: String!
   userName: String
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   workspaceId: String!
-}
-
-type OwnerWorkSpace {
-  id: String!
-  userName: String
-  email: String!
-  firstName: String!
-  lastName: String!
-  workspaceId: String!
-  role: String!
 }
 
 type User {
@@ -52,8 +42,8 @@ input UserInput {
   id: String!
   userName: String!
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   inviteId: ID
   workspaceId: String
 }

@@ -2,7 +2,7 @@ const tableName = 'invitations';
 
 exports.up = (knex, Promise) => {
   return knex.schema.createTable(tableName, (t) => {
-    t.increments('id').unsigned().notNullable().primary();
+    t.uuid('id').notNullable().primary();
     t.string('user_id').notNullable();
     t.string('workspace_id').notNullable();
     t.dateTime('expiry_date').notNullable();

@@ -27,14 +27,14 @@ class UserWorkspaceService extends BaseService {
   }
 
   async removeUserWorkspace(input) {
-    const { userId, workspaceId, currentUserId } = input;
+    const { userId, workspaceId, ownerUserId } = input;
     await UserWorkspace.query()
       .delete()
       .where('user_id', userId)
       .where('role', 'member')
       .where('workspace_id', workspaceId);
 
-    return await userService.getUserInfo(currentUserId);
+    return await userService.getUserInfo(ownerUserId);
   }
 }
 

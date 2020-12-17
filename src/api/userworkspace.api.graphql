@@ -10,7 +10,7 @@ extend type Mutation {
 input UserWorkspaceInput {
   userId: String!
   workspaceId: String!
-  currentUserId: String!
+  ownerUserId: String!
 }
 
 type UserWorkspace {
