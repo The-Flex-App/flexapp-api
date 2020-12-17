@@ -9,10 +9,10 @@ export default class UserWorkspace extends BaseModel {
 
     properties: {
       id: { type: 'integer' },
-      createdAt: { type: 'string', format: 'date-time' },
-      updatedAt: { type: 'string', format: 'date-time' },
       userId: { type: 'string', maxLength: 36 },
       workspaceId: { type: 'string' },
+      createdAt: { type: 'string', format: 'date-time' },
+      updatedAt: { type: 'string', format: 'date-time' },
     },
 
     required: ['userId', 'workspaceId'],

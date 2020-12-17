@@ -9,12 +9,12 @@ export default class Invitation extends BaseModel {
 
     properties: {
       id: { type: 'integer' },
-      createdAt: { type: 'string', format: 'date-time' },
-      updatedAt: { type: 'string', format: 'date-time' },
       expiryDate: { type: 'string', format: 'date-time' },
-      userId: { type: 'bigInteger' },
+      userId: { type: 'string', maxLength: 36 },
       used: { type: 'boolean' },
       workspaceId: { type: 'string' },
+      createdAt: { type: 'string', format: 'date-time' },
+      updatedAt: { type: 'string', format: 'date-time' },
     },
 
     required: ['workspaceId'],

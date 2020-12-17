@@ -5,6 +5,7 @@ import { compare, hash } from 'bcrypt';
 import { transaction } from 'objection';
 import { UserInputError } from 'apollo-server-express';
 import { invitationService } from './invitation.service';
+import { v4 as uuidv4 } from 'uuid';
 
 const HASH_ROUNDS = 12;
 
@@ -90,23 +91,29 @@ class UserService extends BaseService {
     try {
       trx = await transaction.start(User.knex());
       const { id, workspaceId, inviteId } = input;
-      const existingUser = this.findById(id);
+
       const userId = input.id;
-      // invitation flow for a member user
-      if (existingUser && workspaceId && inviteId) {
-        const workspaceinput = { userId, workspaceId, role: 'member' };
-        const invitationDetails = { id: parseInt(inviteId), workspaceId };
-        await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
-        await invitationService.editInvite(invitationDetails, trx);
-      } else {
-        // normal user flow
-        const userWorkspaceId = 'ws' + userId;
+      const existingUser = await this.findById(userId);
+
+      // normal create user workflow
+      if (!existingUser) {
+        const userWorkspaceId = uuidv4();
         input.workspaceId = userWorkspaceId;
+        delete input.inviteId;
         await User.query(trx).insert(input);
         const role = 'owner';
         const workspaceinput = { userId, workspaceId: userWorkspaceId, role };
         await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
       }
+
+      // invitation flow for a member user
+      if (workspaceId && inviteId) {
+        const workspaceinput = { userId, workspaceId, role: 'member' };
+        const invitationDetails = { id: parseInt(inviteId), workspaceId };
+        await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
+        await invitationService.editInvite(invitationDetails, trx);
+      }
+
       await trx.commit();
       const userInfo = await this.getUserInfo(userId);
       return userInfo;
@@ -175,11 +182,11 @@ class UserService extends BaseService {
   }
 
   async findById(id) {
-    return User.query().findOne('id', id);
+    return await User.query().findOne('id', id);
   }
 
   async findByWorkspaceId(workspaceId) {
-    return User.query().findOne('workspaceId', workspaceId);
+    return await User.query().findOne('workspaceId', workspaceId);
   }
 }
 

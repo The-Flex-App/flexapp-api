@@ -26,7 +26,7 @@ export const resolvers = {
         }
       } else if (await userService.findById(id)) {
         // normal member and owner workspace flow
-        if (workspaceId && !userService.findByWorkspaceId(input.workspaceId)) {
+        if (workspaceId && !userService.findByWorkspaceId(workspaceId)) {
           throw new Error('Invalid user or workspace');
         }
         return userService.getUserInfo(id, workspaceId);

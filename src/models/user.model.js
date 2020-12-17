@@ -9,12 +9,12 @@ export default class User extends BaseModel {
     properties: {
       id: { type: 'string', maxLength: 36 },
       userName: { type: 'string', maxLength: 255 },
-      createdAt: { type: 'string', format: 'date-time' },
-      updatedAt: { type: 'string', format: 'date-time' },
       firstName: { type: 'string', minLength: 1, maxLength: 255 },
       lastName: { type: 'string', minLength: 1, maxLength: 255 },
       email: { type: 'string', minLength: 1, maxLength: 255, format: 'email' },
       workspaceId: { type: 'string' },
+      createdAt: { type: 'string', format: 'date-time' },
+      updatedAt: { type: 'string', format: 'date-time' },
     },
 
     required: ['firstName', 'lastName', 'email'],
