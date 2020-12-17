@@ -2,6 +2,7 @@ import BaseService from './base.service';
 import { userService } from './user.service';
 import Invitation from '../models/invitation.model';
 import { transaction } from 'objection';
+import { v4 as uuidv4 } from 'uuid';
 
 class InvitationService extends BaseService {
   constructor() {
@@ -18,6 +19,7 @@ class InvitationService extends BaseService {
       let oneDayFromNow = d.setDate(d.getDate() + 1);
       oneDayFromNow = new Date(oneDayFromNow);
       input.expiryDate = oneDayFromNow;
+      input.id = uuidv4();
       input.used = false;
 
       const invitation = await Invitation.query(trx).insert(input);
