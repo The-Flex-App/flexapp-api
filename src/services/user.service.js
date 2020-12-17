@@ -35,9 +35,8 @@ class UserService extends BaseService {
     const workspaceId = workspaceid || ownerInfo.workspaceId;
 
     // when user is on others workspace
-    if (workspaceid) {
-      ownerInfo.role = workspaceid === ownerInfo.workspaceId ? role : 'member';
-    }
+    ownerInfo.role =
+      workspaceid && workspaceid !== ownerInfo.workspaceId ? 'member' : 'owner';
 
     const workspaceMembers = await User.query()
       .select('users.*')

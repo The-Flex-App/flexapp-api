@@ -14,27 +14,17 @@ type UserInfo {
   role: String!
   workspaceId: String!
   email: String!
-  memberWorkspaceInfo: [MemberWorkSpace!]!
-  ownerWorkspaceInfo: [OwnerWorkSpace!]!
+  workspaces: [info!]!
+  workspaceMembers: [info!]!
 }
 
-type MemberWorkSpace {
-  id: String!
-  userName: String
-  email: String!
-  firstName: String!
-  lastName: String!
-  workspaceId: String!
-}
-
-type OwnerWorkSpace {
+type info {
   id: String!
   userName: String
   email: String!
   firstName: String
   lastName: String
   workspaceId: String!
-  role: String!
 }
 
 type User {
