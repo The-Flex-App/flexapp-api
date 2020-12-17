@@ -59,7 +59,9 @@ class InvitationService extends BaseService {
     if (invite) {
       const { expiryDate, workspaceId, used } = invite;
       const isExpiredLink = this.isExiredLink(new Date(expiryDate), used);
-      if (
+      if (!user && !isExpiredLink) {
+        return true;
+      } else if (
         workspaceId &&
         workspaceId === inputWorkspaceId &&
         !isExpiredLink &&
