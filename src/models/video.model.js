@@ -9,7 +9,6 @@ export default class Video extends BaseModel {
 
     properties: {
       id: { type: 'integer' },
-      creatorId: { type: 'integer' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
       title: { type: 'string', minLength: 1, maxLength: 255 },
@@ -20,7 +19,7 @@ export default class Video extends BaseModel {
       projectId: { type: 'integer' },
     },
 
-    required: ['creatorId', 'projectId', 'video'],
+    required: ['projectId', 'video'],
   };
 
   static relationMappings = {
@@ -28,7 +27,7 @@ export default class Video extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: `${__dirname}/user.model`,
       join: {
-        from: 'projects.creatorId',
+        from: 'projects.userId',
         to: 'users.id',
       },
     },

@@ -1,0 +1,49 @@
+extend type Query {
+  userById(id: String!): User!
+  getUserInfo(id: String): UserInfo!
+}
+
+extend type Mutation {
+  createUser(input: UserInput): UserInfo
+}
+
+type UserInfo {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  role: String!
+  workspaceId: String!
+  email: String!
+  workspaces: [info!]!
+  workspaceMembers: [info!]!
+}
+
+type info {
+  id: String!
+  userName: String
+  email: String!
+  firstName: String
+  lastName: String
+  workspaceId: String!
+}
+
+type User {
+  id: String!
+  userName: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  workspaceId: String!
+}
+
+input UserInput {
+  id: String!
+  userName: String!
+  email: String!
+  firstName: String
+  lastName: String
+  inviteId: ID
+  workspaceId: String
+}

@@ -1,13 +1,20 @@
 import { readFileSync } from 'fs';
 import { projectService } from '../services/project.service';
-import { UserDataLoader } from '../dataloaders/user.dataloader';
+import { userService } from '../services/user.service';
 
-export const typeDefs = readFileSync(`${__dirname}/project.api.graphql`, 'utf8');
+export const typeDefs = readFileSync(
+  `${__dirname}/project.api.graphql`,
+  'utf8'
+);
 
 export const resolvers = {
   Query: {
     projectById: (parent, { id }, ctx, info) => {
       return projectService.findById(id);
+    },
+
+    projectByWorkspaceId: (parent, { workspaceId }, ctx, info) => {
+      return projectService.findProjectByWorkspaceId(workspaceId);
     },
 
     projects: (parent, { first, offset, orderBy }, ctx, info) => {
@@ -17,11 +24,10 @@ export const resolvers = {
 
   Mutation: {
     createProject: async (parent, { input }, ctx, info) => {
-      console.log(input);
-      if (await projectService.findByTitle(input.title)) {
+      const { title, workspaceId } = input;
+      if (await projectService.validateProject(title, workspaceId)) {
         throw new Error('Project already exists');
       }
-
       return projectService.createProject(input);
     },
 

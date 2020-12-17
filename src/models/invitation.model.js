@@ -1,22 +1,23 @@
 import BaseModel from './base.model';
 import { Model } from 'objection';
 
-export default class Project extends BaseModel {
-  static tableName = 'projects';
+export default class Invitation extends BaseModel {
+  static tableName = 'invitations';
 
   static jsonSchema = {
     type: 'object',
 
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'string', maxLength: 36 },
+      expiryDate: { type: 'string', format: 'date-time' },
       userId: { type: 'string', maxLength: 36 },
-      title: { type: 'string', minLength: 1, maxLength: 255 },
-      description: { type: 'string', minLength: 1, maxLength: 4000 },
+      used: { type: 'boolean' },
+      workspaceId: { type: 'string' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
     },
 
-    required: ['userId', 'title'],
+    required: ['workspaceId'],
   };
 
   static relationMappings = {
@@ -24,7 +25,7 @@ export default class Project extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: `${__dirname}/user.model`,
       join: {
-        from: 'projects.userId',
+        from: 'invitations.userId',
         to: 'users.id',
       },
     },

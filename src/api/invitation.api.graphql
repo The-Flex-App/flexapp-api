@@ -1,0 +1,23 @@
+extend type Query {
+  invitationById(id: String!): Invitation!
+}
+
+extend type Mutation {
+  createInvitaton(input: InvitationInput): Invitation!
+  deleteInvitation(id: String!): Invitation
+}
+
+type Invitation {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expiryDate: DateTime!
+  used: Boolean!
+  userId: String
+  workspaceId: String!
+}
+
+input InvitationInput {
+  workspaceId: String!
+  userId: String!
+}

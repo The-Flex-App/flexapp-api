@@ -1,15 +1,15 @@
-const tableName = 'users';
+const tableName = 'users_workspace';
 
 exports.up = (knex, Promise) => {
   return knex.schema.createTable(tableName, (t) => {
-    t.uuid('id').notNullable().primary();
+    t.increments('id').unsigned().notNullable().primary();
+    t.string('user_id').notNullable();
     t.string('workspace_id').notNullable();
-    t.string('user_name').notNullable();
-    t.string('first_name').notNullable();
-    t.string('last_name').notNullable();
-    t.string('email').notNullable();
+    t.string('role').notNullable();
     t.dateTime('created_at').notNullable();
     t.dateTime('updated_at').notNullable();
+
+    //  t.foreign('user_id', 'users_workspace_fk1').references('users.id');
   });
 };
 

@@ -1,8 +1,8 @@
 import BaseModel from './base.model';
 import { Model } from 'objection';
 
-export default class Project extends BaseModel {
-  static tableName = 'projects';
+export default class UserWorkspace extends BaseModel {
+  static tableName = 'users_workspace';
 
   static jsonSchema = {
     type: 'object',
@@ -10,13 +10,12 @@ export default class Project extends BaseModel {
     properties: {
       id: { type: 'integer' },
       userId: { type: 'string', maxLength: 36 },
-      title: { type: 'string', minLength: 1, maxLength: 255 },
-      description: { type: 'string', minLength: 1, maxLength: 4000 },
+      workspaceId: { type: 'string' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
     },
 
-    required: ['userId', 'title'],
+    required: ['userId', 'workspaceId'],
   };
 
   static relationMappings = {
@@ -24,7 +23,7 @@ export default class Project extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: `${__dirname}/user.model`,
       join: {
-        from: 'projects.userId',
+        from: 'users_workspace.userId',
         to: 'users.id',
       },
     },
