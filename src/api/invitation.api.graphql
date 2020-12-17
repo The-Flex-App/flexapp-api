@@ -1,14 +1,14 @@
 extend type Query {
-  invitationById(id: ID!): Invitation!
+  invitationById(id: String!): Invitation!
 }
 
 extend type Mutation {
   createInvitaton(input: InvitationInput): Invitation!
-  deleteInvitation(id: ID!): Invitation
+  deleteInvitation(id: String!): Invitation
 }
 
 type Invitation {
-  id: ID!
+  id: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   expiryDate: DateTime!

@@ -8,7 +8,7 @@ export default class Invitation extends BaseModel {
     type: 'object',
 
     properties: {
-      id: { type: 'integer' },
+      id: { type: 'string', maxLength: 36 },
       expiryDate: { type: 'string', format: 'date-time' },
       userId: { type: 'string', maxLength: 36 },
       used: { type: 'boolean' },

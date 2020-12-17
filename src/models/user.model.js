@@ -17,6 +17,6 @@ export default class User extends BaseModel {
       updatedAt: { type: 'string', format: 'date-time' },
     },
 
-    required: ['firstName', 'lastName', 'email'],
+    required: ['email'],
   };
 }

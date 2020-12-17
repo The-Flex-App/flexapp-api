@@ -31,8 +31,8 @@ type OwnerWorkSpace {
   id: String!
   userName: String
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   workspaceId: String!
   role: String!
 }
@@ -52,8 +52,8 @@ input UserInput {
   id: String!
   userName: String!
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   inviteId: ID
   workspaceId: String
 }

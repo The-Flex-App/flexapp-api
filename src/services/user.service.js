@@ -31,25 +31,16 @@ class UserService extends BaseService {
   }
 
   async getUserInfo(userid, workspaceid) {
-    const ownerInfo = await User.query().findOne('id', userid);
+    const ownerInfo = await this.findById(userid);
     const workspaceId = workspaceid || ownerInfo.workspaceId;
-    let role;
+
+    // when user is on others workspace
     if (workspaceid) {
-      role = workspaceid === ownerInfo.workspaceId ? 'owner' : 'member';
-    } else {
-      role = 'owner';
+      ownerInfo.role = workspaceid === ownerInfo.workspaceId ? role : 'member';
     }
 
-    const ownerWorkspaceInfo = await User.query()
-      .select(
-        'users.id',
-        'users.first_name',
-        'users.last_name',
-        'users.email',
-        'userworkspace.role',
-        'users.user_name',
-        'users.workspace_id'
-      )
+    const workspaceMembers = await User.query()
+      .select('users.*')
       .innerJoin(
         'users_workspace as userworkspace',
         'users.id',
@@ -58,16 +49,8 @@ class UserService extends BaseService {
       .where('userworkspace.workspace_id', workspaceId)
       .where('userworkspace.role', 'member');
 
-    const memberWorkspaceInfo = await User.query()
-      .select(
-        'users.id',
-        'users.first_name',
-        'users.last_name',
-        'users.email',
-        'userworkspace.role',
-        'userworkspace.user_id',
-        'userworkspace.workspace_id'
-      )
+    const workspaces = await User.query()
+      .select('users.*')
       .innerJoin(
         'users_workspace as userworkspace',
         'users.workspace_id',
@@ -78,9 +61,8 @@ class UserService extends BaseService {
 
     const userInfo = {
       ...ownerInfo,
-      role,
-      ownerWorkspaceInfo,
-      memberWorkspaceInfo,
+      workspaceMembers,
+      workspaces,
     };
 
     return userInfo;
@@ -90,9 +72,8 @@ class UserService extends BaseService {
     let trx;
     try {
       trx = await transaction.start(User.knex());
-      const { id, workspaceId, inviteId } = input;
+      const { id: userId, workspaceId, inviteId } = input;
 
-      const userId = input.id;
       const existingUser = await this.findById(userId);
 
       // normal create user workflow
@@ -109,7 +90,7 @@ class UserService extends BaseService {
       // invitation flow for a member user
       if (workspaceId && inviteId) {
         const workspaceinput = { userId, workspaceId, role: 'member' };
-        const invitationDetails = { id: parseInt(inviteId), workspaceId };
+        const invitationDetails = { id: inviteId, workspaceId };
         await userWorkspaceService.createUserWorkspace(workspaceinput, trx);
         await invitationService.editInvite(invitationDetails, trx);
       }
