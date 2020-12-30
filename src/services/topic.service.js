@@ -38,9 +38,9 @@ class TopicService extends BaseService {
 
   async deleteTopic(id) {
     const topic = await this.findById(id);
-    const projectId = topic.projectId;
     if (topic) {
       await Topic.query().delete().where('id', id);
+      await videoService.deleteVideoByTopicId(id);
     }
     return topic;
   }

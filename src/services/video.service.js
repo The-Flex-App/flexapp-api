@@ -53,6 +53,11 @@ class VideoService extends BaseService {
     return true;
   }
 
+  async deleteVideoByTopicId(topicId) {
+    await Video.query().delete().where('topicId', topicId);
+    return true;
+  }
+
   async findByProject(projectId, orderBy = {}) {
     const { field = '', direction = 'asc' } = orderBy;
 
