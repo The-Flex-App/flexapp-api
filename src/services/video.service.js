@@ -48,10 +48,36 @@ class VideoService extends BaseService {
     return video;
   }
 
-  async findByProject(projectId, workspaceId, orderBy = {}) {
+  async deleteVideoByProjectId(projectId) {
+    await Video.query().delete().where('projectId', projectId);
+    return true;
+  }
+
+  async deleteVideoByTopicId(topicId) {
+    await Video.query().delete().where('topicId', topicId);
+    return true;
+  }
+
+  async findByProject(projectId, orderBy = {}) {
     const { field = '', direction = 'asc' } = orderBy;
 
     let query = Video.query().where('projectId', projectId);
+
+    if (field && query) {
+      query = query.orderBy(field, direction);
+    }
+
+    return query;
+  }
+
+  async findByTopic(projectId, topicId, orderBy = {}) {
+    const { field = '', direction = 'asc' } = orderBy;
+
+    let query = Video.query()
+      .select('videos.*', 'users.firstName', 'users.lastName', 'users.email')
+      .leftJoin('users', 'videos.userId', 'users.id')
+      .where('projectId', projectId)
+      .where('topicId', topicId);
 
     if (field && query) {
       query = query.orderBy(field, direction);

@@ -5,11 +5,11 @@ exports.up = (knex, Promise) => {
     t.increments('id').unsigned().notNullable().primary();
     t.string('title').notNullable();
     t.text('description');
+    t.string('rag').notNullable();
+    t.dateTime('finish_date').notNullable();
     t.string('user_id').notNullable();
     t.dateTime('created_at').notNullable();
     t.dateTime('updated_at').notNullable();
-
-    // t.foreign('user_id', 'projects_fk1').references('users.id');
   });
 };
 
