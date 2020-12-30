@@ -11,6 +11,7 @@ export default class Video extends BaseModel {
       id: { type: 'integer' },
       topicId: { type: 'integer' },
       projectId: { type: 'integer' },
+      userId: { type: 'string', maxLength: 36 },
       title: { type: 'string', minLength: 1, maxLength: 255 },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
       video: { type: 'string', minLength: 1, maxLength: 4000 },
@@ -20,7 +21,7 @@ export default class Video extends BaseModel {
       updatedAt: { type: 'string', format: 'date-time' },
     },
 
-    required: ['topicId', 'projectId', 'creatorId', 'video'],
+    required: ['topicId', 'projectId', 'userId', 'video'],
   };
 
   static relationMappings = {

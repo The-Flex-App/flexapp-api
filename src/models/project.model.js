@@ -12,7 +12,7 @@ export default class Project extends BaseModel {
       userId: { type: 'string', maxLength: 36 },
       title: { type: 'string', minLength: 1, maxLength: 255 },
       rag: { type: 'string' },
-      finishDate: { type: 'string' },
+      finishDate: { type: 'string', format: 'date-time' },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },

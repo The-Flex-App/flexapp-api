@@ -95,7 +95,7 @@ class UserService extends BaseService {
       }
 
       await trx.commit();
-      const userInfo = await this.getUserInfo(userId);
+      const userInfo = await this.getUserInfo(userId, workspaceId);
       return userInfo;
     } catch (err) {
       await trx.rollback();

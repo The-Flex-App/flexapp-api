@@ -5,7 +5,7 @@ exports.up = (knex, Promise) => {
     t.increments('id').unsigned().notNullable().primary();
     t.integer('project_id').unsigned().notNullable();
     t.integer('topic_id').unsigned().notNullable();
-    t.string('creator_id').notNullable();
+    t.string('user_id').notNullable();
     t.string('thumbnail');
     t.integer('duration');
     t.string('title');
@@ -15,7 +15,6 @@ exports.up = (knex, Promise) => {
 
     t.foreign('project_id', 'videos_fk1').references('projects.id');
     t.foreign('topic_id', 'videos_fk2').references('topics.id');
-    t.foreign('creator_id', 'videos_fk3').references('users.id');
   });
 };
 

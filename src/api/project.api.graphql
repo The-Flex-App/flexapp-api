@@ -29,14 +29,18 @@ enum ProjectSort {
 
 type Project {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   title: String!
   description: String
+  rag: String!
+  finishDate: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input ProjectInput {
   title: String!
-  description: String
   workspaceId: String
+  description: String
+  rag: String!
+  finishDate: String!
 }
