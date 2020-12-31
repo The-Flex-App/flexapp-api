@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { topicService } from '../services/topic.service';
+import { VideoByTopicDataLoader } from '../dataloaders/video.dataloader';
 
 export const typeDefs = readFileSync(`${__dirname}/topic.api.graphql`, 'utf8');
 
@@ -33,6 +34,15 @@ export const resolvers = {
 
     deleteTopic: (parent, { id }, ctx, info) => {
       return topicService.deleteTopic(id);
+    },
+  },
+
+  Topic: {
+    videos: ({ id }, args, context, info) => {
+      const videoByTopicDataLoader = VideoByTopicDataLoader.getInstance(
+        context
+      );
+      return videoByTopicDataLoader.load(id);
     },
   },
 };
