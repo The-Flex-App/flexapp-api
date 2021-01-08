@@ -70,13 +70,27 @@ class VideoService extends BaseService {
     return query;
   }
 
-  async findByTopic(projectId, topicId, orderBy = {}) {
+  async findByTopics(topicIds, orderBy = {}) {
     const { field = '', direction = 'asc' } = orderBy;
 
     let query = Video.query()
       .select('videos.*', 'users.firstName', 'users.lastName', 'users.email')
       .leftJoin('users', 'videos.userId', 'users.id')
-      .where('projectId', projectId)
+      .whereIn('topicId', topicIds);
+
+    if (field && query) {
+      query = query.orderBy(field, direction);
+    }
+
+    return query;
+  }
+
+  async findByTopic(topicId, orderBy = {}) {
+    const { field = '', direction = 'asc' } = orderBy;
+
+    let query = Video.query()
+      .select('videos.*', 'users.firstName', 'users.lastName', 'users.email')
+      .leftJoin('users', 'videos.userId', 'users.id')
       .where('topicId', topicId);
 
     if (field && query) {

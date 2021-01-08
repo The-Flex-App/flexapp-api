@@ -12,7 +12,6 @@ exports.up = (knex, Promise) => {
     t.text('video').notNullable();
     t.dateTime('created_at').notNullable();
     t.dateTime('updated_at').notNullable();
-
     // t.foreign('project_id', 'videos_fk1').references('projects.id');
     // t.foreign('topic_id', 'videos_fk2').references('topics.id');
   });

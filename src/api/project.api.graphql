@@ -35,6 +35,7 @@ type Project {
   finishDate: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
+  topics: [Topic!]!
 }
 
 input ProjectInput {
