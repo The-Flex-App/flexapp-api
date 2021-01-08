@@ -1,7 +1,7 @@
 extend type Query {
   videoById(id: ID!): Video
 
-  videosByProject(projectId: Int, orderBy: SortInput): [Video]!
+  videosByTopic(topicId: Int, projectId: Int, orderBy: SortInput): [UserVideo]!
 
   videos(first: Int, offset: Int, orderBy: SortInput): [Video!]!
 }
@@ -24,21 +24,42 @@ enum Sort {
 
 type Video {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   projectId: Int!
+  userId: String!
+  topicId: Int!
   title: String
   thumbnail: String
   duration: Int
   video: String!
   description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserVideo {
+  id: ID!
+  projectId: Int!
+  userId: String!
+  topicId: Int!
+  firstName: String
+  lastName: String
+  email: String
+  title: String
+  thumbnail: String
+  duration: Int
+  video: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input VideoInput {
   title: String
+  projectId: Int!
+  topicId: Int!
+  userId: String!
   description: String
   video: String!
   thumbnail: String
   duration: Int
-  projectId: Int!
 }

@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { projectService } from '../services/project.service';
-import { userService } from '../services/user.service';
+import { TopicByProjectDataLoader } from '../dataloaders/topic.dataloader';
 
 export const typeDefs = readFileSync(
   `${__dirname}/project.api.graphql`,
@@ -37,6 +37,15 @@ export const resolvers = {
 
     deleteProject: (parent, { id }, ctx, info) => {
       return projectService.deleteProject(id);
+    },
+  },
+
+  Project: {
+    topics: ({ id }, args, context, info) => {
+      const topicByProjectDataLoader = TopicByProjectDataLoader.getInstance(
+        context
+      );
+      return topicByProjectDataLoader.load(id);
     },
   },
 };

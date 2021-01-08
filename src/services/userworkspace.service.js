@@ -18,10 +18,8 @@ class UserWorkspaceService extends BaseService {
   async createUserWorkspace(input, trx) {
     try {
       const userworkspace = await UserWorkspace.query(trx).insert(input);
-      // await trx.commit();
       return userworkspace;
     } catch (err) {
-      // await trx.rollback();
       throw err;
     }
   }

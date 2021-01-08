@@ -1,5 +1,6 @@
 import BaseService from './base.service';
 import { userService } from '../services/user.service';
+import { topicService } from '../services/topic.service';
 import Project from '../models/project.model';
 import { transaction } from 'objection';
 
@@ -16,6 +17,7 @@ class ProjectService extends BaseService {
       const user = await userService.findByWorkspaceId(input.workspaceId);
       delete input.workspaceId;
       input.userId = user.id;
+      input.finishDate = new Date(input.finishDate);
       const project = await Project.query(trx).insert(input);
       await trx.commit();
       return project;
@@ -29,12 +31,10 @@ class ProjectService extends BaseService {
     let trx;
     try {
       trx = await transaction.start(Project.knex());
-
+      input.finishDate = new Date(input.finishDate);
       await Project.query(trx).findById(id).patch(input);
       const project = await Project.query(trx).findById(id);
-
       await trx.commit();
-
       return project;
     } catch (err) {
       await trx.rollback();
@@ -44,9 +44,10 @@ class ProjectService extends BaseService {
 
   async deleteProject(id) {
     const project = await this.findById(id);
-
-    await Project.query().deleteById(id);
-
+    if (project) {
+      await Project.query().delete().where('id', id);
+      await topicService.deleteTopicsByProjectId(id);
+    }
     return project;
   }
 

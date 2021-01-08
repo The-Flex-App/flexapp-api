@@ -1,0 +1,24 @@
+extend type Query {
+  topicById(id: ID!): Topic
+  topicsByProjectId(projectId: Int): [Topic]
+}
+
+extend type Mutation {
+  createTopic(input: TopicInput!): Topic!
+  editTopic(id: ID!, input: TopicInput!): Topic!
+  deleteTopic(id: ID!): Topic
+}
+
+type Topic {
+  id: ID!
+  title: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  videos: [UserVideo!]!
+}
+
+input TopicInput {
+  title: String!
+  projectId: Int!
+}

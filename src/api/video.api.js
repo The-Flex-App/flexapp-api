@@ -9,13 +9,8 @@ export const resolvers = {
       return videoService.findById(id);
     },
 
-    videosByProject: (
-      parent,
-      { projectId, workspaceId, orderBy },
-      ctx,
-      info
-    ) => {
-      return videoService.findByProject(projectId, workspaceId, orderBy);
+    videosByTopic: (parent, { projectId, topicId, orderBy }, ctx, info) => {
+      return videoService.findByTopic(projectId, topicId, orderBy);
     },
 
     videos: (parent, { first, offset, orderBy }, ctx, info) => {
