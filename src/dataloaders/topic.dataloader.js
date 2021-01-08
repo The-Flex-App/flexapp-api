@@ -4,7 +4,7 @@ import { topicService } from '../services/topic.service';
 export class TopicByProjectDataLoader extends DataLoader {
   constructor() {
     const batchLoader = (projectIds) => {
-      return topicService.findTopicByProjectId(projectIds).then((topics) =>
+      return topicService.findTopicByProjectIds(projectIds).then((topics) =>
         projectIds.map((projectId) => {
           return topics.filter((topic) => topic.projectId == projectId);
         })

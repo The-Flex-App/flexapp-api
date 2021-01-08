@@ -15,7 +15,7 @@ type Topic {
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
-  videos: [Video!]!
+  videos: [UserVideo!]!
 }
 
 input TopicInput {

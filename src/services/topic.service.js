@@ -67,9 +67,19 @@ class TopicService extends BaseService {
     return false;
   }
 
-  async findTopicByProjectId(projectIds, orderBy = {}) {
+  async findTopicByProjectIds(projectIds, orderBy = {}) {
     const { field = '', direction = 'asc' } = orderBy;
     let query = await Topic.query().whereIn('projectId', projectIds);
+
+    if (field) {
+      query = query.orderBy(field, direction);
+    }
+    return query;
+  }
+
+  async findTopicByProjectId(projectId, orderBy = {}) {
+    const { field = '', direction = 'asc' } = orderBy;
+    let query = await Topic.query().where('projectId', projectId);
 
     if (field) {
       query = query.orderBy(field, direction);

@@ -4,7 +4,7 @@ import { videoService } from '../services/video.service';
 export class VideoByTopicDataLoader extends DataLoader {
   constructor() {
     const batchLoader = (topicIds) => {
-      return videoService.findByTopic(topicIds).then((videos) =>
+      return videoService.findByTopics(topicIds).then((videos) =>
         topicIds.map((topicId) => {
           return videos.filter((video) => video.topicId == topicId);
         })
