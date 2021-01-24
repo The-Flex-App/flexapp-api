@@ -1,7 +1,7 @@
 import BaseService from './base.service';
 import Video from '../models/video.model';
-import AWS from 'aws-sdk';
 import { transaction } from 'objection';
+import S3UtilService from '../utils/s3Utils';
 
 class VideoService extends BaseService {
   constructor() {
@@ -41,28 +41,6 @@ class VideoService extends BaseService {
     }
   }
 
-  async deleteVideosFromS3(videoArray) {
-    var deleteParam = {
-      Bucket: 'media.flexapp.co.uk',
-      Delete: {
-        Objects: videoArray,
-      },
-    };
-    const options = {
-      signatureVersion: 'v4',
-      region: 'eu-west-2',
-    };
-
-    const s3 = new AWS.S3(options);
-
-    s3.deleteObjects(deleteParam, function (err, data) {
-      // error
-      if (err) return false;
-      // deleted
-      else return true;
-    });
-  }
-
   getVideoObject(videos) {
     const videoObjArray = [];
     videos.forEach((video) => {
@@ -73,7 +51,7 @@ class VideoService extends BaseService {
 
   async deleteVideo(id) {
     const video = await this.findById(id);
-    await this.deleteVideosFromS3(this.getVideoObject([video]));
+    await S3UtilService.deleteObjects(this.getVideoObject([video]));
     await Video.query().deleteById(id);
     return video;
   }
@@ -81,7 +59,7 @@ class VideoService extends BaseService {
   async deleteVideoByProjectId(projectId) {
     const videos = await Video.query().where('projectId', projectId);
     if (videos.length) {
-      await this.deleteVideosFromS3(this.getVideoObject(videos));
+      await S3UtilService.deleteObjects(this.getVideoObject(videos));
       const result = await Video.query().delete().where('projectId', projectId);
       return result;
     }
@@ -91,7 +69,7 @@ class VideoService extends BaseService {
   async deleteVideoByTopicId(topicId) {
     const videos = await Video.query().where('topicId', topicId);
     if (videos.length) {
-      await this.deleteVideosFromS3(this.getVideoObject(videos));
+      await S3UtilService.deleteObjects(this.getVideoObject(videos));
       const result = await Video.query().delete().where('topicId', topicId);
       return result;
     }
