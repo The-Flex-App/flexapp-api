@@ -17,7 +17,7 @@ const configurations = {
     ssl: false,
     port: 8080,
     hostname: 'localhost',
-    bucket: 'devmedia.flexapp.co.uk',
+    bucket: 'media.flexapp.co.uk',
     cloudfront: 'https://d2kpolfe7gcq1a.cloudfront.net',
   },
   development: {
@@ -123,7 +123,9 @@ apiExplorer
     // Run server
     server.listen({ port: config.port }, () =>
       logger.info(
-        `🚀 Server ready at http${config.ssl ? 's' : ''}://${config.hostname}:${config.port}${apolloServer.graphqlPath}`
+        `🚀 Server ready at http${config.ssl ? 's' : ''}://${config.hostname}:${
+          config.port
+        }${apolloServer.graphqlPath}`
       )
     );
   })
