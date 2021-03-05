@@ -17,7 +17,7 @@ class ProjectService extends BaseService {
       const user = await userService.findByWorkspaceId(input.workspaceId);
       delete input.workspaceId;
       input.userId = user.id;
-      input.finishDate = new Date(input.finishDate);
+      input.order = parseInt(input.order);
       const project = await Project.query(trx).insert(input);
       await trx.commit();
       return project;
@@ -31,7 +31,7 @@ class ProjectService extends BaseService {
     let trx;
     try {
       trx = await transaction.start(Project.knex());
-      input.finishDate = new Date(input.finishDate);
+      input.order = parseInt(input.order);
       await Project.query(trx).findById(id).patch(input);
       const project = await Project.query(trx).findById(id);
       await trx.commit();

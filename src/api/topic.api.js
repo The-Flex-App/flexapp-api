@@ -19,7 +19,7 @@ export const resolvers = {
     createTopic: async (parent, { input }, ctx, info) => {
       const { title, projectId } = input;
       if (await topicService.validateTopic(title, projectId)) {
-        throw new Error('Topic already exists for current Project');
+        throw new Error('Activity already exists for current Goal');
       }
       return topicService.createTopic(input);
     },
@@ -27,7 +27,7 @@ export const resolvers = {
     editTopic: async (parent, { id, input }, ctx, info) => {
       const { title, projectId } = input;
       if (await topicService.validateTopic(title, projectId, id)) {
-        throw new Error('Topic already exists for current Project');
+        throw new Error('Activity already exists for current Goal');
       }
       return topicService.editTopic(id, input);
     },

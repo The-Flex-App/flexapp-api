@@ -12,7 +12,7 @@ export default class Video extends BaseModel {
       topicId: { type: 'integer' },
       projectId: { type: 'integer' },
       userId: { type: 'string', maxLength: 36 },
-      title: { type: 'string', minLength: 1, maxLength: 255 },
+      title: { type: 'string', minLength: 1, maxLength: 4000 },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
       video: { type: 'string', minLength: 1, maxLength: 4000 },
       thumbnail: { type: 'string', minLength: 1, maxLength: 1000 },

@@ -13,8 +13,8 @@ export const resolvers = {
       return projectService.findById(id);
     },
 
-    projectByWorkspaceId: (parent, { workspaceId }, ctx, info) => {
-      return projectService.findProjectByWorkspaceId(workspaceId);
+    projectByWorkspaceId: (parent, { workspaceId, orderBy }, ctx, info) => {
+      return projectService.findProjectByWorkspaceId(workspaceId, orderBy);
     },
 
     projects: (parent, { first, offset, orderBy }, ctx, info) => {
@@ -26,7 +26,7 @@ export const resolvers = {
     createProject: async (parent, { input }, ctx, info) => {
       const { title, workspaceId } = input;
       if (await projectService.validateProject(title, workspaceId)) {
-        throw new Error('Project already exists');
+        throw new Error('Goal already exists');
       }
       return projectService.createProject(input);
     },
