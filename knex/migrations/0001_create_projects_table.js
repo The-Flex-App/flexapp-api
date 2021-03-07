@@ -6,8 +6,9 @@ exports.up = (knex, Promise) => {
     t.string('title').notNullable();
     t.text('description');
     t.string('rag').notNullable();
-    t.dateTime('finish_date').notNullable();
+    t.string('period').notNullable();
     t.string('user_id').notNullable();
+    t.integer('order').unsigned().notNullable();
     t.dateTime('created_at').notNullable();
     t.dateTime('updated_at').notNullable();
   });
