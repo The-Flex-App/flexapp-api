@@ -13,8 +13,8 @@ export const resolvers = {
       return projectService.findById(id);
     },
 
-    projectByWorkspaceId: (parent, { workspaceId }, ctx, info) => {
-      return projectService.findProjectByWorkspaceId(workspaceId);
+    projectByWorkspaceId: (parent, { workspaceId, orderBy }, ctx, info) => {
+      return projectService.findProjectByWorkspaceId(workspaceId, orderBy);
     },
 
     projects: (parent, { first, offset, orderBy }, ctx, info) => {
