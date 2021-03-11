@@ -45,10 +45,18 @@ class ProjectService extends BaseService {
   async deleteProject(id) {
     const project = await this.findById(id);
     if (project) {
-      await Project.query().delete().where('id', id);
-      await topicService.deleteTopicsByProjectId(id);
+      let trx;
+      try {
+        trx = await transaction.start(Project.knex());
+        await Project.query(trx).delete().where('id', id);
+        await topicService.deleteTopicsByProjectId(id, trx);
+        await trx.commit();
+        return project;
+      } catch (err) {
+        await trx.rollback();
+        throw err;
+      }
     }
-    return project;
   }
 
   async findByTitle(title, userId) {
@@ -68,14 +76,27 @@ class ProjectService extends BaseService {
     }
   }
 
-  async findProjectByWorkspaceId(workspaceId, orderBy = {}) {
-    const { field = '', direction = 'asc' } = orderBy;
+  async reArrangeProjects({ workspaceId, projects: projectIds }) {
+    try {
+      const user = await userService.findByWorkspaceId(workspaceId);
+      await projectIds.map(async (projectId, index) => {
+        return await Project.query()
+          .patch({ order: index + 1 })
+          .where('id', parseInt(projectId))
+          .where('userId', user.id);
+      });
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
+
+  async findProjectByWorkspaceId(workspaceId) {
     const user = await userService.findByWorkspaceId(workspaceId);
     if (user) {
-      let query = await Project.query().where('userId', user.id);
-      if (field) {
-        query = query.orderBy(field, direction);
-      }
+      let query = await Project.query()
+        .where('userId', user.id)
+        .orderBy('order', 'asc');
       return query;
     }
   }

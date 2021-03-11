@@ -38,6 +38,10 @@ export const resolvers = {
     deleteProject: (parent, { id }, ctx, info) => {
       return projectService.deleteProject(id);
     },
+
+    reArrangeProjects: (parent, { input }, ctx, info) => {
+      return projectService.reArrangeProjects(input);
+    },
   },
 
   Project: {
