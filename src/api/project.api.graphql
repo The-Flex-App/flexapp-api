@@ -37,6 +37,8 @@ type Project {
   title: String!
   description: String
   rag: String!
+  userId: String!
+  workspaceId: String!
   order: ID!
   period: String!
   createdAt: DateTime!
@@ -46,7 +48,8 @@ type Project {
 
 input ProjectInput {
   title: String!
-  workspaceId: String
+  workspaceId: String!
+  userId: String!
   description: String
   rag: String!
   period: String!
