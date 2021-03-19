@@ -14,9 +14,6 @@ class ProjectService extends BaseService {
 
     try {
       trx = await transaction.start(Project.knex());
-      const user = await userService.findByWorkspaceId(input.workspaceId);
-      delete input.workspaceId;
-      input.userId = user.id;
       input.order = parseInt(input.order);
       const project = await Project.query(trx).insert(input);
       await trx.commit();
@@ -78,12 +75,11 @@ class ProjectService extends BaseService {
 
   async reArrangeProjects({ workspaceId, projects: projectIds }) {
     try {
-      const user = await userService.findByWorkspaceId(workspaceId);
       await projectIds.map(async (projectId, index) => {
         return await Project.query()
           .patch({ order: index + 1 })
           .where('id', parseInt(projectId))
-          .where('userId', user.id);
+          .where('workspaceId', workspaceId);
       });
       return { success: true };
     } catch (err) {
@@ -95,7 +91,7 @@ class ProjectService extends BaseService {
     const user = await userService.findByWorkspaceId(workspaceId);
     if (user) {
       let query = await Project.query()
-        .where('userId', user.id)
+        .where('workspaceId', workspaceId)
         .orderBy('order', 'asc');
       return query;
     }
