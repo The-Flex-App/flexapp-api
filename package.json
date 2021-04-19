@@ -1,11 +1,10 @@
 {
-  "name": "graphql-example",
-  "description": "Sample project demonstrating common issues to consider when working on GraphQL API",
+  "name": "flexapp-api",
+  "description": "Flexapp GraphQL API",
   "version": "1.0.0",
   "main": "dist/app.js",
-  "author": "Ioram Gordadze <Yoh0xFF@gmail.com>",
+  "author": "Anuj Gakhar",
   "license": "MIT",
-  "repository": "https://github.com/Yoh0xFF/graphql-example",
   "scripts": {
     "migrate": "knex migrate:latest",
     "watch": "export DEBUG=knex:query && npm run migrate && nodemon --exec babel-node src/app.js",
@@ -35,6 +34,7 @@
     "https": "^1.0.0",
     "jsonwebtoken": "8.5.1",
     "knex": "0.21.2",
+    "knex-migrate": "^1.7.4",
     "lodash": "4.17.19",
     "morgan": "1.10.0",
     "mysql": "^2.18.1",
