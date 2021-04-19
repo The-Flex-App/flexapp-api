@@ -1,12 +1,7 @@
 extend type Query {
   projectById(id: ID!): Project
 
-  projectByWorkspaceId(
-    workspaceId: String!
-    orderBy: ProjectSortInput
-    first: Int
-    offset: Int
-  ): [Project]!
+  projectByWorkspaceId(workspaceId: String!): [Project]!
 
   projects(first: Int, offset: Int, orderBy: ProjectSortInput): [Project!]!
 }
@@ -15,11 +10,21 @@ extend type Mutation {
   createProject(input: ProjectInput!): Project!
   editProject(id: ID!, input: ProjectInput!): Project
   deleteProject(id: ID!): Project
+  reArrangeProjects(input: ProjectListInput!): successResponse
 }
 
 input ProjectSortInput {
   field: String!
   direction: ProjectSort
+}
+
+input ProjectListInput {
+  workspaceId: String!
+  projects: [ID]!
+}
+
+type successResponse {
+  success: Boolean!
 }
 
 enum ProjectSort {
@@ -32,7 +37,10 @@ type Project {
   title: String!
   description: String
   rag: String!
-  finishDate: DateTime!
+  userId: String!
+  workspaceId: String!
+  order: ID!
+  period: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   topics: [Topic!]!
@@ -40,8 +48,10 @@ type Project {
 
 input ProjectInput {
   title: String!
-  workspaceId: String
+  workspaceId: String!
+  userId: String!
   description: String
   rag: String!
-  finishDate: String!
+  period: String!
+  order: ID!
 }

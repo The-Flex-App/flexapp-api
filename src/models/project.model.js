@@ -10,10 +10,12 @@ export default class Project extends BaseModel {
     properties: {
       id: { type: 'integer' },
       userId: { type: 'string', maxLength: 36 },
+      workspaceId: { type: 'string' },
       title: { type: 'string', minLength: 1, maxLength: 255 },
       rag: { type: 'string' },
-      finishDate: { type: 'string', format: 'date-time' },
+      period: { type: 'string', maxLength: 36 },
       description: { type: 'string', minLength: 1, maxLength: 4000 },
+      order: { type: 'integer' },
       createdAt: { type: 'string', format: 'date-time' },
       updatedAt: { type: 'string', format: 'date-time' },
     },

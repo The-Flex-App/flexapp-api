@@ -14,10 +14,7 @@ class ProjectService extends BaseService {
 
     try {
       trx = await transaction.start(Project.knex());
-      const user = await userService.findByWorkspaceId(input.workspaceId);
-      delete input.workspaceId;
-      input.userId = user.id;
-      input.finishDate = new Date(input.finishDate);
+      input.order = parseInt(input.order);
       const project = await Project.query(trx).insert(input);
       await trx.commit();
       return project;
@@ -31,7 +28,7 @@ class ProjectService extends BaseService {
     let trx;
     try {
       trx = await transaction.start(Project.knex());
-      input.finishDate = new Date(input.finishDate);
+      input.order = parseInt(input.order);
       await Project.query(trx).findById(id).patch(input);
       const project = await Project.query(trx).findById(id);
       await trx.commit();
@@ -45,10 +42,18 @@ class ProjectService extends BaseService {
   async deleteProject(id) {
     const project = await this.findById(id);
     if (project) {
-      await Project.query().delete().where('id', id);
-      await topicService.deleteTopicsByProjectId(id);
+      let trx;
+      try {
+        trx = await transaction.start(Project.knex());
+        await Project.query(trx).delete().where('id', id);
+        await topicService.deleteTopicsByProjectId(id, trx);
+        await trx.commit();
+        return project;
+      } catch (err) {
+        await trx.rollback();
+        throw err;
+      }
     }
-    return project;
   }
 
   async findByTitle(title, userId) {
@@ -68,14 +73,26 @@ class ProjectService extends BaseService {
     }
   }
 
-  async findProjectByWorkspaceId(workspaceId, orderBy = {}) {
-    const { field = '', direction = 'asc' } = orderBy;
+  async reArrangeProjects({ workspaceId, projects: projectIds }) {
+    try {
+      await projectIds.map(async (projectId, index) => {
+        return await Project.query()
+          .patch({ order: index + 1 })
+          .where('id', parseInt(projectId))
+          .where('workspaceId', workspaceId);
+      });
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  }
+
+  async findProjectByWorkspaceId(workspaceId) {
     const user = await userService.findByWorkspaceId(workspaceId);
     if (user) {
-      let query = await Project.query().where('userId', user.id);
-      if (field) {
-        query = query.orderBy(field, direction);
-      }
+      let query = await Project.query()
+        .where('workspaceId', workspaceId)
+        .orderBy('order', 'asc');
       return query;
     }
   }

@@ -26,7 +26,7 @@ export const resolvers = {
     createProject: async (parent, { input }, ctx, info) => {
       const { title, workspaceId } = input;
       if (await projectService.validateProject(title, workspaceId)) {
-        throw new Error('Project already exists');
+        throw new Error('Goal already exists');
       }
       return projectService.createProject(input);
     },
@@ -37,6 +37,10 @@ export const resolvers = {
 
     deleteProject: (parent, { id }, ctx, info) => {
       return projectService.deleteProject(id);
+    },
+
+    reArrangeProjects: (parent, { input }, ctx, info) => {
+      return projectService.reArrangeProjects(input);
     },
   },
 

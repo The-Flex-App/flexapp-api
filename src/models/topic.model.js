@@ -9,6 +9,7 @@ export default class Topic extends BaseModel {
 
     properties: {
       id: { type: 'integer' },
+      userId: { type: 'string', maxLength: 36 },
       projectId: { type: 'integer' },
       title: { type: 'string' },
       createdAt: { type: 'string', format: 'date-time' },

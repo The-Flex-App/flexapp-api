@@ -13,6 +13,7 @@ type Topic {
   id: ID!
   title: String!
   description: String
+  userId: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   videos: [UserVideo!]!
@@ -21,4 +22,5 @@ type Topic {
 input TopicInput {
   title: String!
   projectId: Int!
+  userId: String!
 }
