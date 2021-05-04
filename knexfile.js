@@ -1,5 +1,5 @@
 module.exports = {
-  development: {
+  staging: {
     client: 'mysql',
     connection: {
       host: 'ls-02d714dd85e3659b1335be3dfecc3576fee25204.cltvmbclnwmk.eu-west-2.rds.amazonaws.com',
