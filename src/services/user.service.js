@@ -165,6 +165,15 @@ class UserService extends BaseService {
     return await User.query().findOne('id', id);
   }
 
+  async isExistingUser(input) {
+    const { id, email } = input;
+    if (id) {
+      return this.findById(id);
+    } else {
+      return this.findByEmail(email);
+    }
+  }
+
   async findByWorkspaceId(workspaceId) {
     return await User.query().findOne('workspaceId', workspaceId);
   }
