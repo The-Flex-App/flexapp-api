@@ -18,18 +18,18 @@ const configurations = {
     port: 8080,
     hostname: 'localhost',
     bucket: 'media.flexapp.co.uk',
-    cloudfront: 'https://d2kpolfe7gcq1a.cloudfront.net',
-  },
-  development: {
-    ssl: false,
-    port: 8080,
-    hostname: 'localhost',
-    bucket: 'media.flexapp.co.uk',
     cloudfront: 'https://media.flexapp.co.uk',
+  },
+  staging: {
+    ssl: false,
+    port: 8082,
+    hostname: 'localhost',
+    bucket: 'stagingmedia.flexapp.co.uk',
+    cloudfront: 'https://stagingmedia.flexapp.co.uk',
   },
 };
 
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.NODE_ENV || 'staging';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Do not reject self signed certificates
 
@@ -123,9 +123,7 @@ apiExplorer
     // Run server
     server.listen({ port: config.port }, () =>
       logger.info(
-        `🚀 Server ready at http${config.ssl ? 's' : ''}://${config.hostname}:${
-          config.port
-        }${apolloServer.graphqlPath}`
+        `🚀 Server ready at http${config.ssl ? 's' : ''}://${config.hostname}:${config.port}${apolloServer.graphqlPath}`
       )
     );
   })

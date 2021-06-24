@@ -39,7 +39,7 @@ type User {
 }
 
 input UserInput {
-  id: String!
+  id: String
   userName: String!
   email: String!
   firstName: String
